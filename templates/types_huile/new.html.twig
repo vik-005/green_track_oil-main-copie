@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}New TypesHuile{% endblock %}
+
+{% block page_title %} <h1>Create new TypesHuile</h1>{% endblock %}
+
+{% block content %}
+   
+    {{ include('types_huile/_form.html.twig') }}
+
+    <a href="{{ path('app_types_huile_index') }}">back to list</a>
+{% endblock %}

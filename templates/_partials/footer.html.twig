@@ -1,0 +1,48 @@
+<div class="nk-footer bg-light text-dark">
+    <div class="container wide-xl">
+        <div class="nk-footer-wrap d-flex flex-lg-row flex-column align-items-center justify-content-between py-3">
+            <!-- Logo et droits d'auteur -->
+            <div class="nk-footer-left d-flex align-items-center">
+                <a href="#" class="nk-footer-logo text-dark d-flex align-items-center text-decoration-none">
+                    <!-- Ajoutez ici votre logo si vous en avez un -->
+                    <i class="bi bi-cube me-2"></i> <!-- Exemple d'icône -->
+                    <span class="ms-2">Oil Dashboard</span>
+                </a>
+                <span class="ms-3">|</span>
+                <span class="nk-footer-copyright ms-3">
+                    &copy; {{ "now"|date("Y") }} Oil. Réalisé par
+                    <a href="https://example.com" target="_blank" class="text-dark">VikenceDigitLab</a>
+                </span>
+            </div>
+
+            <!-- Liens supplémentaires -->
+            <div class="nk-footer-links d-flex flex-column flex-lg-row align-items-center mt-3 mt-lg-0">
+                <a href="" class="text-dark text-decoration-none me-lg-3 mb-2 mb-lg-0">Contact</a>
+                <a href="" class="text-dark text-decoration-none me-lg-3 mb-2 mb-lg-0">Politique de confidentialité</a>
+                <a href="" class="text-dark text-decoration-none">Conditions d'utilisation</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styles personnalisés -->
+<style>
+    .nk-footer {
+        background-color: #f8f9fa; /* Couleur de fond gris clair */
+        padding: 1rem 0; /* Padding vertical */
+    }
+    .nk-footer-logo i {
+        font-size: 1.5rem; /* Taille de l'icône */
+    }
+    .nk-footer-links a {
+        margin: 0.5rem 0; /* Espacement vertical pour les petits écrans */
+    }
+    .nk-footer-links {
+        text-align: center;
+    }
+    @media (min-width: 992px) {
+        .nk-footer-links {
+            text-align: right;
+        }
+    }
+</style>

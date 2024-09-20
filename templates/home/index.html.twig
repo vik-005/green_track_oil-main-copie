@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <h1 class="mb-4">Bienvenue sur la page d'accueil</h1>
+
+        {% if app.user %}
+            <div class="row">
+                <!-- User Info Card -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Informations utilisateur</h5>
+                            <p class="card-text"><strong>Nom :</strong> {{ app.user.nomUtilisateur }}</p>
+                            <p class="card-text"><strong>Email :</strong> {{ app.user.email }}</p>
+                            <p class="card-text"><strong>Date d'inscription :</strong> {{ app.user.dateCreation|date('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities Card -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Activités récentes</h5>
+                            <ul class="list-group list-group-flush">
+                                <!-- Replace with dynamic data -->
+                                <li class="list-group-item">Activité 1</li>
+                                <li class="list-group-item">Activité 2</li>
+                                <li class="list-group-item">Activité 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Card -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Notifications</h5>
+                            <ul class="list-group list-group-flush">
+                                <!-- Replace with dynamic data -->
+                                <li class="list-group-item">Notification 1</li>
+                                <li class="list-group-item">Notification 2</li>
+                                <li class="list-group-item">Notification 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                Vous n'êtes pas connecté. <a href="{{ path('app_login') }}" class="alert-link">Connexion</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

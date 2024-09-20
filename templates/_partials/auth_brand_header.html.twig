@@ -1,0 +1,17 @@
+<div class="brand-logo pb-4 text-start d-flex align-items-center justify-content-center">
+    <a href="{{ app.user ?  : path('app_login') }}" class="logo-link d-flex align-items-center">
+        <picture>
+            <!-- Logo pour écrans clairs (light) -->
+            <source media="(min-width: 992px)" srcset="{{ asset('public/images/green.jpg') }}">
+            <source media="(max-width: 991px)" srcset="{{ asset('public/images/green-small.jpg') }}">
+            <img loading="lazy" class="logo-light logo-img img-fluid" src="{{ asset('public/images/green.jpg') }}" height="36" alt="logo">
+        </picture>
+
+        <picture>
+            <!-- Logo pour écrans sombres (dark) -->
+            <source media="(min-width: 992px)" srcset="{{ asset('images/logo-dark.png') }}">
+            <source media="(max-width: 991px)" srcset="{{ asset('images/logo-dark-small.png') }}">
+            <img loading="lazy" class="logo-dark logo-img img-fluid" src="{{ asset('images/logo-dark.png') }}" height="36" alt="logo-dark">
+        </picture>
+    </a>
+</div>

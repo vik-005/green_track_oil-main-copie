@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DemandesProspection index{% endblock %}
+
+{% block body %}
+    <h1>DemandesProspection index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pays</th>
+                <th>Ville</th>
+                <th>Region</th>
+                <th>Statut</th>
+                <th>DateDemande</th>
+                <th>DateApprobation</th>
+                <th>Commentaire</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demandes_prospection in demandes_prospections %}
+            <tr>
+                <td>{{ demandes_prospection.id }}</td>
+                <td>{{ demandes_prospection.pays }}</td>
+                <td>{{ demandes_prospection.ville }}</td>
+                <td>{{ demandes_prospection.region }}</td>
+                <td>{{ demandes_prospection.statut }}</td>
+                <td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ demandes_prospection.commentaire }}</td>
+                <td>
+                    <a href="{{ path('app_demande_prospection_show', {'id': demandes_prospection.id}) }}">show</a>
+                    <a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_prospection_new') }}">Create new</a>
+{% endblock %}

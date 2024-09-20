@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Liste des vendeurs{% endblock %}
+
+{% block content %}
+
+
+<h2>Liste des Vendeurs</h2>
+<table class="table datatable-init">
+    <thead  class="text-nowrap">
+        <tr>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Ville</th>
+            <th>Pays</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+            <th>Type Vendeur</th>
+            <th>Date de Création</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for vendeur in vendeurs %}
+        <tr >
+            <td>{{ vendeur.nomVendeur }}</td>
+            <td>{{ vendeur.adresse }}</td>
+            <td>{{ vendeur.ville }}</td>
+            <td>{{ vendeur.pays }}</td>
+            <td>{{ vendeur.telephone }}</td>
+            <td>{{ vendeur.email }}</td>
+            <td>{{ vendeur.typevendeur ? vendeur.typevendeur.nomtype : 'N/A' }}</td>
+            <td>{{ vendeur.getFormattedDateCreation() }}</td>
+            <td class="text-nowrap">
+                <a href="{{ path('vendeur_edit', {'id': vendeur.id}) }}" class="btn btn-primary">Éditer</a>
+                <a href="{{ path('vendeur_delete', {'id': vendeur.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce vendeur ?');">Supprimer</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="9">Aucun vendeur trouvé</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a href="{{ path('vendeur_new') }}" class="btn btn-success">Ajouter un nouveau vendeur</a>
+{% endblock %}

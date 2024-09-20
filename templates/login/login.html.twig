@@ -1,0 +1,93 @@
+{% extends "base_auth.html.twig" %}
+
+{% block title %}
+	Connexion
+{% endblock %}
+
+{% block meta_tags %}
+	<meta name="turbo-visit-control" content="reload">
+{% endblock %}
+
+{% block auth_body %}
+	<div class="nk-block nk-block-middle nk-auth-body wide-xs">
+		<div class="card card-bordered rounded-5 shadow-sm">
+			<div class="card-inner card-inner-lg">
+				{% include "_partials/auth_brand_header.html.twig" %}
+
+				<div class="nk-block-head">
+					<div class="nk-block-head-content">
+						<span class="nk-block-title fw-bold" style="font-size:1rem;">Connexion</span>
+						<div class="nk-block-des">
+							<p>Accédez à la plateforme GreenTrackOil à l’aide de vos identifiant.</p>
+						</div>
+					</div>
+				</div>
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				{% for label, messages in app.flashes %}
+					{% for message in messages %}
+						<div data-bs-dismiss="alert" class="alert alert-dim my-2 border rounded-3 position-relative top-0 px-3 alert-fill-  rounded-0  alert-{{ label }} alert-dismissible fade show" role="alert">
+							<div class="container wide-xl flex-lg-row flex-column  justify-content-lg-start justify-content-center d-flex flex-wrap align-items-center">
+								<em class="icon ni ni-alert-circle m-0 me-lg-2 mb-lg-0 mb-2" style="font-size: 20px;"></em>
+								<span class="m-0 text-lg-start text-center">
+									{{ message }}
+								</span>
+							</div>
+						</div>
+					{% endfor %}
+				{% endfor %}
+
+				{% if app.user %}
+					<div class="mb-3 alert alert-info">
+						Connecter en tant que
+						{{ app.user.username|lower }}
+						,
+						<a href="{{ path('app_logout') }}" method="post" style="display: none;">Déconnexion</a>
+					</div>
+				{% else %}
+					<form data-turbo="false" autocomplete="off" method="post">
+						<input autocomplete="false" name="hidden" type="text" style="display:none;">
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<div class="form-group">
+							<label class="form-label" for="email">Identifiant</label>
+							<div class="form-control-wrap">
+								<input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Votre indentifiant de connexion" class="form-control form-control-lg" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="form-label" for="password">Mot de passe</label>
+							<div class="form-control-wrap">
+								<a href="javascript:void(0)" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+									<em class="passcode-icon icon-show icon ni ni-eye"></em>
+									<em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+								</a>
+								<input type="password" class="form-control form-control-lg" name="password" autocomplete="current-password" required id="password" placeholder="Entrer votre mot de passe">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="custom-control custom-control-xs custom-checkbox">
+								<input checked type="checkbox" name="_remember_me" class="custom-control-input" id="checkbox">
+								<label class="custom-control-label" for="checkbox">
+									Se souvenir de
+									<span class="text-primary">moi ✨</span>
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-lg btn-primary btn-block">Connexion</button>
+						</div>
+					</form>
+					<div class="form-note-s2 text-center pt-4">
+						Mot de passe oublié ?
+						<a href="#">
+							<strong>Réinitialisez le
+							</strong>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

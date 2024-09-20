@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+{% block title %}New TypeVendeur{% endblock %}
+
+{% block content %}
+    <h1>Create new TypeVendeur</h1>
+
+    {{ include('type_vendeur/_form.html.twig') }}
+
+    <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-primary">back to list</a>
+{% endblock %}

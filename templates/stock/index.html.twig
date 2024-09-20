@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SortiesStock index{% endblock %}
+
+{% block body %}
+    <h1>SortiesStock index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Volume</th>
+                <th>PrixVente</th>
+                <th>DateSorti</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sorties_stock in sorties_stocks %}
+            <tr>
+                <td>{{ sorties_stock.id }}</td>
+                <td>{{ sorties_stock.volume }}</td>
+                <td>{{ sorties_stock.prixVente }}</td>
+                <td>{{ sorties_stock.dateSorti ? sorties_stock.dateSorti|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_stock_show', {'id': sorties_stock.id}) }}">show</a>
+                    <a href="{{ path('app_stock_edit', {'id': sorties_stock.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_new') }}">Create new</a>
+{% endblock %}

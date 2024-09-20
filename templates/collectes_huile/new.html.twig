@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Nouvelle collecte d'huile{% endblock %}
+
+{% block content %}
+    <h2>Nouvelle Collecte d'Huile</h2>
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_row(form.volume, {'label': 'Volume (en litres)'}) }}
+        
+        {# Champ pour la photo des bidons #}
+        {{ form_row(form.photoBidons, {
+            'label': 'Photo des bidons',
+            'attr': {
+                'accept': 'image/*',  
+            }
+        }) }}
+        
+        {{ form_row(form.prixAchat, {'label': 'Prix d\'achat (par litre)'}) }}
+        {{ form_row(form.dateCollecte, {'label': 'Date de collecte'}) }}
+        {{ form_row(form.vendeurs, {'label': 'Vendeur'}) }}
+        {{ form_row(form.utilisateurs, {'label': 'Agent de collecte'}) }}
+        {{ form_row(form.typehuile, {'label': 'Type d\'huile'}) }}
+        <button class="btn btn-success">Enregistrer</button>
+    {{ form_end(form) }}
+    
+    <a href="{{ path('collectes_huile_index') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

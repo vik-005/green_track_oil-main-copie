@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" class="js">
+	<head>
+		<meta charset="UTF-8">
+		{% block meta_tags %}{% endblock %}
+		<title>Green track oil •
+			{% block title %}Erreur 404 - Page introuvable
+			{% endblock %}
+		</title>
+		{% block add_stylesheets %}{% endblock %}
+		{% block stylesheets %}
+			{% include '_partials/stylesheet.html.twig' %}
+		{% endblock %}
+	</head>
+	{% block body %}
+		<body class="nk-body bg-white npc-default has-aside no-touch nk-nio-theme">
+			<div class="nk-app-root">
+				<div class="nk-wrap">
+					{% block header %}
+						{% include '_partials/header.html.twig' %}
+					{% endblock %}
+					<div class="nk-content p-0">
+						{% include "_partials/alert.html.twig" %}
+						<div class="container-lg wide-xl py-3 px-3">
+							{% block main %}
+								<div class="nk-content-inner">
+									{% block sidebar %}
+										<div class="nk-aside d-lg-none d-block" data-content="sideNav" data-toggle-overlay="true" data-toggle-screen="lg" data-toggle-body="true">
+											<div class="nk-sidebar-menu" data-simplebar>
+												{% include '_partials/mobile_header_menu.html.twig' %}
+											</div>
+										</div>
+									{% endblock %}
+									<div class="nk-content-body">
+										<div class="nk-content-wrap">
+											{% block page_info %}
+												<h5>
+													{% block sub_title %}{% endblock %}
+												</h5>
+												{% block navigation %}
+													<nav class="mb-3" style="overflow-x: auto;overflow-y:hidden;">
+														<ul class="breadcrumb breadcrumb flex-nowrap d-inline-flex text-truncate">
+															<li class="breadcrumb-item">
+																<a href="{{ path('home') }}">Acceuil</a>
+															</li>
+															{% block navigation_path %}{% endblock %}
+														</ul>
+													</nav>
+												{% endblock %}
+												<h4 class="mt-1">
+													{% block page_title %}{% endblock %}
+												</h4>
+
+												<hr>
+
+											{% endblock %}
+
+											{% block content %}
+											{% endblock %}
+										</div>
+									</div>
+								</div>
+							{% endblock %}
+							{% block footer %}
+								{% include '_partials/footer.html.twig' %}
+							{% endblock %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% block javascripts %}
+				{% include '_partials/script.html.twig' %}
+			{% endblock %}
+			{% block add_javascripts %}{% endblock %}
+		</body>
+	{% endblock %}
+</html>

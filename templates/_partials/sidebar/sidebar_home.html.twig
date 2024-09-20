@@ -1,0 +1,188 @@
+<div class="nk-aside bg-light" data-content="sideNav" data-toggle-overlay="true" data-toggle-screen="lg" data-toggle-body="true">
+    <div class="nk-sidebar-menu" data-simplebar>
+        {% include '_partials/mobile_header_menu.html.twig' %}
+
+        <ul class="nav flex-column menu-box">
+            <li class="nav-item">
+                <h6 class="nav-heading text-primary">Accueil</h6>
+            </li>
+
+            <!-- Menu pour les Super Administrateurs -->
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a href="{{ path('home') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-house-door nav-icon"></i>
+                    <span class="nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_type_vendeur_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-tag nav-icon"></i>
+                    <span class="nav-text">Types de Vendeurs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_types_huile_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-droplet nav-icon"></i>
+                    <span class="nav-text">Types d'Huile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('vendeur_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-shop nav-icon"></i>
+                    <span class="nav-text">Liste des Vendeurs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_demande_prospection_new') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-search nav-icon"></i>
+                    <span class="nav-text">Prospection</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('collectes_huile_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-basket nav-icon"></i>
+                    <span class="nav-text">Liste Collectes d'Huile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_stock_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-box nav-icon"></i>
+                    <span class="nav-text">Sorties de Stock</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-bar-chart nav-icon"></i>
+                    <span class="nav-text">Statistiques</span>
+                </a>
+            </li>
+
+            <!-- Menu pour les Administrateurs -->
+            {% elseif is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+                <a href="{{ path('home') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-house-door nav-icon"></i>
+                    <span class="nav-text">Tableau de bord</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_type_vendeur_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-tag nav-icon"></i>
+                    <span class="nav-text">Types de Vendeurs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_types_huile_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-droplet nav-icon"></i>
+                    <span class="nav-text">Types d'Huile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_demande_prospection_new') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-search nav-icon"></i>
+                    <span class="nav-text">Prospection</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('collectes_huile_index') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-basket nav-icon"></i>
+                    <span class="nav-text">Liste Collectes d'Huile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-bar-chart nav-icon"></i>
+                    <span class="nav-text">Statistiques</span>
+                </a>
+            </li>
+
+            <!-- Menu pour les Agents de Collecte -->
+            {% elseif is_granted('ROLE_AGENT_DE_COLLECTE') %}
+            <li class="nav-item">
+                <a href="{{ path('app_demande_prospection_new') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-search nav-icon"></i>
+                    <span class="nav-text">Prospection</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('collectes_huile_new') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-basket nav-icon"></i>
+                    <span class="nav-text">Liste Collectes d'Huile</span>
+                </a>
+            </li>
+
+            <!-- Menu pour les Acheteurs -->
+            {% elseif is_granted('ROLE_ACHETEUR') %}
+            <!-- Ajoutez des éléments de menu spécifiques aux Acheteurs ici -->
+
+            {% endif %}
+        </ul>
+    </div>
+    <!-- .nk-sidebar-menu -->
+    <div class="nk-aside-close">
+        <a href="#" class="toggle" data-target="sideNav">
+            <em class="icon ni ni-cross"></em>
+        </a>
+    </div>
+    <!-- .nk-aside-close -->
+</div>
+
+<!-- Styles CSS supplémentaires pour le menu -->
+<style>
+    .nk-aside {
+        border-right: 1px solid #ddd;
+        padding: 1rem;
+    }
+    .menu-box {
+        border-radius: .375rem;
+        border: 1px solid #ddd;
+        background: #fff;
+        padding: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    .nav-item {
+        margin-bottom: .5rem;
+    }
+    .nav-link {
+        border: 1px solid transparent;
+        transition: background-color .3s, color .3s, border-color .3s;
+        padding: .5rem 1rem;
+        border-radius: .375rem;
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    .nav-link:hover {
+        background-color: #28a745;
+        color: #fff;
+        border-color: #28a745;
+    }
+    .nav-icon {
+        margin-right: .75rem;
+        font-size: 1.5rem;
+    }
+    .nav-heading {
+        padding: .75rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .nav-text {
+        font-size: 1rem;
+    }
+    @media (max-width: 768px) {
+        .nk-aside {
+            padding: 0;
+        }
+        .menu-box {
+            padding: 0;
+            border: none;
+            box-shadow: none;
+        }
+        .nav-link {
+            padding: .5rem;
+        }
+    }
+</style>

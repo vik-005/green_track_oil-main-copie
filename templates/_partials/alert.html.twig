@@ -1,0 +1,12 @@
+{% for label, messages in app.flashes(['success','warning','info','danger']) %}
+	{% for message in messages %}
+		<div data-bs-dismiss="alert" class="alert m-0 border position-relative top-0 px-3 alert-fill  rounded-0  alert-{{ label }} alert-dismissible fade show" role="alert">
+			<div class="container wide-xl flex-lg-row flex-column  justify-content-lg-start justify-content-center d-flex flex-wrap align-items-center">
+				<em class="icon ni ni-alert-circle m-0 me-lg-2 mb-lg-0 mb-2" style="font-size: 20px;"></em>
+				<span class="m-0 text-lg-start text-center">
+					{{ message }}
+				</span>
+			</div>
+		</div>
+	{% endfor %}
+{% endfor %}

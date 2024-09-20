@@ -1,0 +1,84 @@
+<!-- Header Section -->
+<header class="nk-header bg-light sticky-top shadow-sm">
+    <div class="container-lg">
+        <div class="d-flex justify-content-between align-items-center py-2 flex-wrap">
+            <!-- Logo Section -->
+            <div class="nk-header-brand">
+                <a href="{{ path('home') }}" class="logo-link">
+                    <img class="logo-light img-fluid" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png 2x') }}" alt="logo">
+                    <img class="logo-dark img-fluid" src="{{ asset('images/logo-dark.png') }}" srcset="{{ asset('images/logo-dark2x.png 2x') }}" alt="logo-dark">
+                </a>
+            </div>
+
+            <!-- Menu Section (Desktop) -->
+            <nav class="d-none d-lg-block">
+                <ul class="nk-menu nk-menu-main d-flex mb-0">
+                    <li class="nk-menu-item">
+                        <a href="{{ path('home') }}" class="nk-menu-link">
+                            <span class="nk-menu-text">Accueil</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- User Section -->
+            <div class="nk-header-tools d-flex align-items-center">
+                <ul class="nk-quick-nav d-flex align-items-center mb-0">
+                    <!-- User Dropdown -->
+                    <li class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-toggle d-flex align-items-center">
+                                <div class="user-avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2">
+                                    <i class="bi bi-person" style="font-size: 18px;"></i>
+                                </div>
+                                <div class="user-info d-none d-lg-block">
+                                    <span class="lead-text">{{ app.user.username|lower }}</span>
+                                    <span class="sub-text">{{ app.user.email|u.truncate(25, '...') }}</span>
+                                </div>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-person me-2" style="font-size:20px;"></i>
+                                    Mon compte
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                    <i class="bi bi-box-arrow-right me-2" style="font-size:20px;"></i>
+                                    Déconnexion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Mobile Menu Icon -->
+                    <li class="d-lg-none">
+                        <a href="#" class="toggle nk-quick-nav-icon" data-bs-toggle="offcanvas" data-bs-target="#sideNav">
+                            <i class="bi bi-list"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Offcanvas Menu for Mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sideNav" aria-labelledby="sideNavLabel">
+    <div class="offcanvas-header">
+        <h5 id="sideNavLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nk-menu nk-menu-main">
+            <li class="nk-menu-item">
+                <a href="{{ path('home') }}" class="nk-menu-link">
+                    <span class="nk-menu-text">Accueil</span>
+                </a>
+            </li>
+            <!-- Add more menu items here for mobile view -->
+        </ul>
+    </div>
+</div>

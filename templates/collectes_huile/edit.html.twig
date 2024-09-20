@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Modifier la collecte d'huile{% endblock %}
+
+{% block content %}
+    <h2>Modifier la Collecte d'Huile</h2>
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_row(form.volume, {'label': 'Volume (en litres)'}) }}
+
+        {# Champ pour la photo des bidons #}
+        {{ form_row(form.photoBidons, {
+            'label': 'Photo des bidons',
+            'attr': {
+                'accept': 'image/*',  
+            }
+        }) }}
+
+        {# Si la collecte contient déjà une photo, l'afficher ici #}
+        {% if collecte.photoBidons %}
+            <div>
+                <label>Photo actuelle :</label><br>
+                <img src="{{ asset('uploads/photos/' ~ collecte.photoBidons) }}" alt="Photo des bidons" style="max-width: 150px;">
+            </div>
+        {% endif %}
+
+        {{ form_row(form.prixAchat, {'label': 'Prix d\'achat (par litre)'}) }}
+        {{ form_row(form.dateCollecte, {'label': 'Date de collecte'}) }}
+        {{ form_row(form.vendeurs, {'label': 'Vendeur'}) }}
+        {{ form_row(form.utilisateurs, {'label': 'Agent de collecte'}) }}
+        {{ form_row(form.typehuile, {'label': 'Type d\'huile'}) }}
+        <button class="btn btn-primary">Mettre à jour</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('collectes_huile_index') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+{% block title %}TypesHuile index{% endblock %}
+
+{% block page_title %}
+    <h1>TypesHuile index</h1>
+{% endblock %}
+
+{% block content %}
+    <table class="table datatable-init">
+        <thead class="text-nowrap ">
+            <tr>
+                <th>Id</th>
+                <th>NomTypeHuile</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for types_huile in types_huiles %}
+            <tr>
+                <td>{{ types_huile.id }}</td>
+                <td>{{ types_huile.nomTypeHuile }}</td>
+                <td>
+                    <a href="{{ path('app_types_huile_show', {'id': types_huile.id}) }}"class="btn btn-primary">show</a>
+                    <a href="{{ path('app_types_huile_edit', {'id': types_huile.id}) }}"class="btn btn-danger ">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_types_huile_new') }} "class="btn btn-success mt-3">Create new</a>
+{% endblock %}

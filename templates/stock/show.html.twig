@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SortiesStock{% endblock %}
+
+{% block body %}
+    <h1>SortiesStock</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sorties_stock.id }}</td>
+            </tr>
+            <tr>
+                <th>Volume</th>
+                <td>{{ sorties_stock.volume }}</td>
+            </tr>
+            <tr>
+                <th>PrixVente</th>
+                <td>{{ sorties_stock.prixVente }}</td>
+            </tr>
+            <tr>
+                <th>DateSorti</th>
+                <td>{{ sorties_stock.dateSorti ? sorties_stock.dateSorti|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_index') }}">back to list</a>
+
+    <a href="{{ path('app_stock_edit', {'id': sorties_stock.id}) }}">edit</a>
+
+    {{ include('stock/_delete_form.html.twig') }}
+{% endblock %}

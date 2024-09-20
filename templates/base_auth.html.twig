@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+
+	<body class="nk-body bg-white npc-default pg-auth">
+		<div class="nk-app-root">
+			<div class="nk-main ">
+				<div class="nk-wrap nk-wrap-nosidebar">
+					<div class="nk-content ">
+						{% block auth_body %}{% endblock %}
+						<div class="mx-auto py-4" style="width:150px;">
+							<a class="dark-switch nav-link" href="javascript:void(0)">
+								<em class="icon ni ni-moon"></em>
+								<span>Mode Dark</span>
+							</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+		<script src="{{ asset('assets/js/bundle.js') }}"></script>
+		<script src="{{ asset('assets/js/scripts.js') }}"></script>
+	</body>
+
+{% endblock %}

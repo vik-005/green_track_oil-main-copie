@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DemandesProspection{% endblock %}
+
+{% block body %}
+    <h1>DemandesProspection</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demandes_prospection.id }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ demandes_prospection.pays }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ demandes_prospection.ville }}</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{ demandes_prospection.region }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ demandes_prospection.statut }}</td>
+            </tr>
+            <tr>
+                <th>DateDemande</th>
+                <td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateApprobation</th>
+                <td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ demandes_prospection.commentaire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_prospection_index') }}">back to list</a>
+
+    <a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}">edit</a>
+
+    {{ include('demande_prospection/_delete_form.html.twig') }}
+{% endblock %}

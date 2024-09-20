@@ -1,0 +1,52 @@
+parameters:
+    photos_directory: '%kernel.project_dir%/public/uploads/photos'
+
+security:
+    enable_authenticator_manager: true
+
+    # Configuration des hashers de mot de passe
+    password_hashers:
+        App\Entity\Utilisateurs:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\Utilisateurs
+                property: email
+
+    firewalls:
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\LoginAuthenticator
+            logout:
+                path: app_logout
+                target: app_home # Redirection après la déconnexion
+                invalidate_session: true # Invalide la session utilisateur après déconnexion
+
+    # Contrôle d'accès
+    access_control:
+        - { path: ^/(login|register), roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/settings, roles: ROLE_ADMIN }
+        - { path: ^/collectes, roles: ROLE_ARGENT }
+        - { path: ^/achats, roles: ROLE_ACHETEUR }
+        - { path: ^/, roles: ROLE_USER }
+
+    # Hiérarchie des rôles
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ACHETEUR, ROLE_ARGENT]
+        ROLE_ADMIN: [ROLE_ACHETEUR,ROLE_ARGENT]
+        ROLE_ARGENT: []
+        ROLE_ACHETEUR: []
+        ROLE_USER: []
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Valeur la plus basse pour bcrypt
+                time_cost: 3 # Valeur la plus basse pour argon
+                memory_cost: 10 # Valeur la plus basse pour argon

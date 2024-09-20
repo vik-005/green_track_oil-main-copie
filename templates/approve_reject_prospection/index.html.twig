@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Approbation/Rejet de la Prospection{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Approbation ou Rejet de la Prospection</h1>
+
+    <div class="prospection-details">
+        <h2>Détails de la demande</h2>
+        <p><strong>Agent:</strong> {{ prospection.agent.username }}</p>
+        <p><strong>Date de demande:</strong> {{ prospection.dateDemande|date('d/m/Y') }}</p>
+        <p><strong>Status actuel:</strong> {{ prospection.statut }}</p>
+    </div>
+
+    <div class="prospection-form mt-4">
+        {{ form_start(form) }}
+        <div class="form-group">
+            <label for="action">Action</label>
+            {{ form_widget(form.action, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <div id="commentaire-field" style="display: none;" class="form-group">
+            <label for="commentaire">Commentaire (en cas de rejet)</label>
+            {{ form_widget(form.commentaire, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<script>
+    // Afficher le champ commentaire uniquement si l'option 'rejeté' est sélectionnée
+    document.getElementById('{{ form.action.vars.id }}').addEventListener('change', function () {
+        var commentaireField = document.getElementById('commentaire-field');
+        if (this.value === 'rejeté') {
+            commentaireField.style.display = 'block';
+        } else {
+            commentaireField.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

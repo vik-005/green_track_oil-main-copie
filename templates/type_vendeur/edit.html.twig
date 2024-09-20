@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+{% block title %}Edit TypeVendeur{% endblock %}
+
+{% block content %}
+    <h1>Edit TypeVendeur</h1>
+
+    {{ include('type_vendeur/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-primary">back to list</a>
+
+    {{ include('type_vendeur/_delete_form.html.twig') }}
+{% endblock %}

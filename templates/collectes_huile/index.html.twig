@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Liste des collectes d'huile{% endblock %}
+{% block page_title %}
+
+    <h2>Liste des Collectes d'Huile</h2>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Volume</th>
+                 <th>photoBidons</th>
+                <th>Date</th>
+                <th>Vendeur</th>
+                <th>Agent</th>
+                <th>Type d'huile</th>
+                <th>Prix Achat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for collecte in collectes %}
+            <tr>
+                <td>{{ collecte.volume }} litres</td>
+                  <td>
+            {% if collecte.photoBidons %}
+                <img src="{{ asset('uploads/photos/' ~ collecte.photoBidons) }}" alt="Photo des bidons" style="max-width: 150px;">
+            {% else %}
+                Pas de photo
+            {% endif %}
+        </td>
+                <td>{{ collecte.dateCollecte|date('d-m-Y') }}</td>
+                <td>{{ collecte.vendeurs.nomVendeur }}</td>
+                <td>{{ collecte.utilisateurs.nomUtilisateur }}</td>
+                <td>{{ collecte.typehuile.nomTypeHuile }}</td>
+                <td>{{ collecte.prixachat }} fcfa</td>
+                <td>
+                    <a href="{{ path('collectes_huile_edit', {'id': collecte.id}) }}" class="btn btn-primary">Éditer</a>
+                    <form method="post" action="{{ path('collectes_huile_delete', {'id': collecte.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette collecte ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collecte.id) }}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucune collecte trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('collectes_huile_new') }}" class="btn btn-success">Ajouter une nouvelle collecte</a>
+{% endblock %}

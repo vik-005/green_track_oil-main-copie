@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}TypeVendeur index{% endblock %}
+
+
+{% block page_title %}
+    <h1>TypeVendeur index</h1>
+{% endblock %}
+
+{% block content %}
+    <table class="table datatable-init">
+    <thead  class="text-nowrap">
+            <tr>
+                <th>Id</th>
+                <th>NomType</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_vendeur in type_vendeurs %}
+            <tr>
+                <td>{{ type_vendeur.id }}</td>
+                <td>{{ type_vendeur.nomType }}</td>
+                <td>
+                    <a href="{{ path('app_type_vendeur_show', {'id': type_vendeur.id}) }}">show</a>
+                    <a href="{{ path('app_type_vendeur_edit', {'id': type_vendeur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_type_vendeur_new') }}" class="btn btn-primary" >Create new</a>
+{% endblock %}
