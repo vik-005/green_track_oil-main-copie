@@ -1,59 +1,136 @@
+{# templates/collectes_huile/index.html.twig #}
 {% extends 'base.html.twig' %}
-
 {% block sidebar %}
-{% include "_partials/sidebar/sidebar_home.html.twig" %}
+	{% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
 
-{% block title %}Liste des collectes d'huile{% endblock %}
+{% block title %}
+{{ 'Liste des Collectes d\'Huile'|trans }}{% endblock %}
+
 {% block page_title %}
+    <h2 class="text-center mb-4">{{ 'Liste des Collectes d\'Huile'|trans }}
+</h2>{% endblock %}{% block content %}
 
-    <h2>Liste des Collectes d'Huile</h2>
-{% endblock %}
+<div
+	class="container mt-4">
+	{# Flash messages for success and error notifications #}
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label == 'success' ? 'success' : (label == 'error' ? 'danger' : 'info') }} alert-dismissible fade show" role="alert">
+				{{ message|trans }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'fermer'|trans }}"></button>
+			</div>
+		{% endfor %}
+	{% endfor %}
 
-{% block content %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Volume</th>
-                 <th>photoBidons</th>
-                <th>Date</th>
-                <th>Vendeur</th>
-                <th>Agent</th>
-                <th>Type d'huile</th>
-                <th>Prix Achat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for collecte in collectes %}
-            <tr>
-                <td>{{ collecte.volume }} litres</td>
-                  <td>
-            {% if collecte.photoBidons %}
-                <img src="{{ asset('uploads/photos/' ~ collecte.photoBidons) }}" alt="Photo des bidons" style="max-width: 150px;">
-            {% else %}
-                Pas de photo
-            {% endif %}
-        </td>
-                <td>{{ collecte.dateCollecte|date('d-m-Y') }}</td>
-                <td>{{ collecte.vendeurs.nomVendeur }}</td>
-                <td>{{ collecte.utilisateurs.nomUtilisateur }}</td>
-                <td>{{ collecte.typehuile.nomTypeHuile }}</td>
-                <td>{{ collecte.prixachat }} fcfa</td>
-                <td>
-                    <a href="{{ path('collectes_huile_edit', {'id': collecte.id}) }}" class="btn btn-primary">Éditer</a>
-                    <form method="post" action="{{ path('collectes_huile_delete', {'id': collecte.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette collecte ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collecte.id) }}">
-                        <button class="btn btn-danger">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Aucune collecte trouvée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('collectes_huile_new') }}" class="btn btn-success">Ajouter une nouvelle collecte</a>
-{% endblock %}
+	{# Filter and create buttons #}
+	<div class="d-flex justify-content-end mb-3">
+		<a href="{{ path('app_collectes_huile_filter') }}" class="btn btn-primary btn-sm">
+			<i class="fas fa-filter"></i>
+			{{ 'Filtrer'|trans }}
+		</a>
+		<a href="{{ path('app_collectes_huile_new') }}" class="btn btn-success btn-sm ms-2">
+			<i class="fas fa-plus-circle"></i>
+			{{ 'Créer Nouvelle Collecte'|trans }}
+		</a>
+	</div>
+
+	{# Oil collections table #}
+	<div class="table-responsive">
+		<table class="table table-striped table-bordered rounded shadow datatable-init">
+			<thead class="bg-success text-white text-nowrap">
+				<tr>
+					<th>Id</th>
+					<th>{{ 'VOLUME (L)'|trans }}</th>
+					<th>{{ 'TYPE HUILE'|trans }}</th>
+                    <th>{{ 'TYPE VENDEUR'|trans }}</th>
+					<th>{{ 'Vendeur'|trans }}</th>
+					<th>{{ 'Photos Bidons'|trans }}</th>
+					<th>{{ 'Prix Achat (FCFA)'|trans }}</th>
+					<th>{{ 'Agent'|trans }}</th>
+					<th>{{ 'Date Collecte'|trans }}</th>
+					<th>{{ 'Magasinier'|trans }}</th>
+					<th>{{ 'Statut'|trans }}</th>
+					<th>{{ 'Commentaires Supérieurs'|trans }}</th>
+					<th>{{ 'Commentaires Magasinier'|trans }}</th>
+					<th>{{ 'Date Enregistrement'|trans }}</th>
+					<th>{{ 'Actions'|trans }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for collectes_huile in collectes_huiles %}
+					<tr>
+						<td>{{ collectes_huile.id }}</td>
+						<td>{{ collectes_huile.volume }}</td>
+						<td>{{ collectes_huile.typeHuile.nomTypeHuile }}</td>
+                        <td>{{ collectes_huile.typevendeur.nomType }}</td>
+						<td>{{ collectes_huile.Vendeurs.nomVendeur }}</td>
+						<td>
+							{% if collectes_huile.photoBidons %}
+								<div id="carousel-{{ collectes_huile.id }}" class="carousel slide" data-bs-ride="carousel">
+									<div class="carousel-inner">
+										{% for photoBidons in collectes_huile.photoBidons %}
+											<div class="carousel-item {% if loop.first %}active{% endif %}">
+												<img src="{{ asset('uploads/photos/' ~ photoBidons) }}" alt="Photo Bidons" class="d-block w-100" style="max-height: 200px; object-fit: cover;">
+											</div>
+										{% endfor %}
+									</div>
+									<button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ collectes_huile.id }}" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ collectes_huile.id }}" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button>
+								</div>
+							{% else %}
+								<span class="text-muted">{{ 'Aucune photo'|trans }}</span>
+							{% endif %}
+						</td>
+
+						<td>{{ collectes_huile.prixAchat|number_format(0, ',', ' ') }}
+							FCFA</td>
+						<td>{{ collectes_huile.utilisateurs.nomUtilisateur }}</td>
+						<td>{{ collectes_huile.dateCollecte ? collectes_huile.dateCollecte|date('d/m/Y H:i:s') : 'Non disponible' }}</td>
+						<td>{{ collectes_huile.nomMagasinier }}</td>
+						<td>{{ collectes_huile.statutLabel }}</td>
+						<td>{{ collectes_huile.commentaireSuperieur }}</td>
+						<td>{{ collectes_huile.commentaireMagasinier }}</td>
+						<td>{{ collectes_huile.dateCollecte ? collectes_huile.dateCollecte|date('d/m/Y H:i:s') : 'Non disponible' }}</td>
+						<td>
+							<div class="btn-group" role="group" aria-label="Actions">
+								<a href="{{ path('app_collectes_huile_show', {'id': collectes_huile.id}) }}" class="btn btn-info btn-sm" title="{{ 'Voir'|trans }}" data-bs-toggle="tooltip">
+									<i class="fas fa-eye"></i>
+								</a>
+								<a href="{{ path('app_collectes_huile_valider_edit', {'id': collectes_huile.id}) }}" class="btn btn-primary btn-sm" title="{{ 'Traiter'|trans }}" data-bs-toggle="tooltip">
+									<i class="fas fa-check-circle"></i>
+								</a>
+								<a href="{{ path('app_collectes_huile_edit', {'id': collectes_huile.id}) }}" class="btn btn-warning btn-sm" title="{{ 'Modifier'|trans }}" data-bs-toggle="tooltip">
+									<i class="fas fa-edit"></i>
+								</a>
+								<form method="post" action="{{ path('app_collectes_huile_delete', {'id': collectes_huile.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Êtes-vous sûr de vouloir supprimer cette collecte ?'|trans }}');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collectes_huile.id) }}">
+									<button class="btn btn-danger btn-sm" type="submit" title="{{ 'Supprimer'|trans }}" data-bs-toggle="tooltip">
+										<i class="fas fa-trash-alt"></i>
+									</button>
+								</form>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+		<span class="text-muted">{{ 'Total : %count% enregistrements'|trans({'%count%': collectes_huiles|length}) }}</span>
+	</div>
+</div>
+
+<script>
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+</script>{% endblock %}

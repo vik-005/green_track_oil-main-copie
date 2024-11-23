@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Rapports</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Numéro Resto</th>
+                <th>Nom Restaurant</th>
+                <th>Rencontre</th>
+                <th>Adresse</th>
+                <th>Commentaire</th>
+                <th>Date Demande</th>
+                <th>Date Approbation</th>
+                <th>Supérieur</th>
+                <th>Agent</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rapport in rapports %}
+                <tr>
+                    <td>{{ rapport.id }}</td>
+                    <td>{{ rapport.numresto }}</td>
+                    <td>{{ rapport.nomrestaurant }}</td>
+                    <td>{{ rapport.rencontre }}</td>
+                    <td>{{ rapport.Adresse }}</td>
+                    <td>{{ rapport.commentaire }}</td>
+                    <td>{{ rapport.dateDemande ? rapport.dateDemande|date('d/m/Y H:i') : 'N/A' }}</td>
+                    <td>{{ rapport.dateApprobation ? rapport.dateApprobation|date('d/m/Y H:i') : 'N/A' }}</td>
+                    <td>{{ rapport.superieure }}</td>
+                    <td>{{ rapport.agent.nomUtilisateur }}</td>
+                    <td>{{ rapport.getStatutLabel }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{# templates/emails/prospection_update.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Notification de Mise à Jour de Prospection</title>
+</head>
+<body>
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+    <h1>Notification de Mise à Jour de Demande de Prospection</h1>
+    <p>Cher(e) {{ agent.nomUtilisateur  }},({{ agent.email }})</p>
+    <p>Votre demande de prospection a été mise à jour.</p>
+    <p>
+        <strong>Détails :</strong><br>
+        Statut : {{ prospection.statut }}<br>
+        Date de Demande : {{ prospection.dateDemande|date('d/m/Y') }}<br>
+        Commentaire : {{ prospection.commentaire }}
+    </p>
+    <p>Merci !</p>
+</body>
+</html>
+{% endblock %}

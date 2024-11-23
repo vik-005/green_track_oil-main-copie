@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres du compte{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0 text-center">Paramètres du compte</h4>
+                </div>
+                <div class="card-body">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>{{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>{{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+
+                    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                    
+                    <h5 class="mb-3">Informations personnelles</h5>
+                    <div class="mb-3">
+                        {{ form_label(form.email, 'Adresse e-mail', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.nomUtilisateur, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.nomUtilisateur, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.nomUtilisateur) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.prenomUtilisateur, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.prenomUtilisateur, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.prenomUtilisateur) }}
+                    </div>
+
+                    <h5 class="mt-4 mb-3">Changer le mot de passe</h5>
+                    <div class="mb-3">
+                        {{ form_label(form.currentPassword, 'Mot de passe actuel', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.currentPassword, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.currentPassword) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.newPassword, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.newPassword, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.newPassword) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.confirmNewPassword, 'Confirmer le nouveau mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.confirmNewPassword, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.confirmNewPassword) }}
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-3">
+                        <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .alert {
+        font-size: 0.9rem;
+    }
+
+    .alert .btn-close {
+        font-size: 0.8rem;
+    }
+
+    .form-control {
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
+{% endblock %}

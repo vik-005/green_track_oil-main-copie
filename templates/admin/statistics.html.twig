@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Statistiques</h1>
+
+		<div
+			class="row">
+			<!-- Collecte Mensuelle -->
+			<div class="col-md-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-primary text-white">
+						<h5 class="card-title text-center">Collecte Mensuelle</h5>
+					</div>
+					<div class="card-body">
+						<canvas id="monthlyCollectionsChart"></canvas>
+					</div>
+				</div>
+			</div>
+
+			<!-- Par Type d'Huile -->
+			<div class="col-md-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-success text-white">
+						<h5 class="card-title text-center">Collectes par Type d'Huile</h5>
+					</div>
+					<div class="card-body">
+						<canvas id="oilTypeChart"></canvas>
+					</div>
+				</div>
+			</div>
+
+			<!-- Par Type de Vendeur -->
+			<div class="col-md-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-info text-white">
+						<h5 class="card-title text-center">Collectes par Type de Vendeur</h5>
+					</div>
+					<div class="card-body">
+						<canvas id="vendorTypeChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		// Fonction pour configurer les graphiques
+function createChart(ctx, type, labels, data, options) {
+return new Chart(ctx, {
+type: type,
+data: {
+labels: labels,
+datasets: [
+{
+data: data.values,
+backgroundColor: data.colors,
+borderColor: data.borderColors || null,
+borderWidth: 1
+}
+]
+},
+options: options
+});
+}
+
+// Chargement des données et initialisation des graphiques
+async function initCharts() { // Collecte Mensuelle
+fetchData('{{ path("admin_statistics_monthly_collections") }}').then(data => {
+const labels = data.map(d => `Mois ${
+parseInt(d.mois, 10)
+}`);
+const volumes = data.map(d => parseFloat(d.totalVolume));
+
+new Chart(document.getElementById('monthlyCollectionsChart'), {
+type: 'bar',
+data: {
+labels,
+datasets: [
+{
+label: 'Volume Collecté (L)',
+data: volumes,
+backgroundColor: 'rgba(75, 192, 192, 0.6)'
+}
+]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+display: true
+},
+tooltip: {
+enabled: true
+}
+}
+}
+});
+});
+
+
+// Par Type d'Huile
+const oilData = await fetch('{{ path("admin_statistics_oil_type") }}').then(res => res.json());
+createChart(document.getElementById('oilTypeChart'), 'pie', oilData.map(d => d.oilType), {
+values: oilData.map(d => d.totalVolume),
+colors: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56']
+}, {});
+
+// Par Type de Vendeur
+const vendorData = await fetch('{{ path("admin_statistics_vendor_type") }}').then(res => res.json());
+createChart(document.getElementById('vendorTypeChart'), 'doughnut', vendorData.map(d => d.vendorType), {
+values: vendorData.map(d => d.totalVolume),
+colors: ['#4bc0c0', '#ff9f40', '#9966ff', '#ffcd56']
+}, {});
+}
+
+// Initialisation des graphiques
+initCharts();
+	</script>
+{% endblock %}

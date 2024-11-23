@@ -1,13 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit DemandesProspection{% endblock %}
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
 
-{% block body %}
-    <h1>Edit DemandesProspection</h1>
+{% block title %}Modifier la Demande de Prospection{% endblock %}
 
-    {{ include('demande_prospection/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_demande_prospection_index') }}">back to list</a>
-
-    {{ include('demande_prospection/_delete_form.html.twig') }}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Modifier la Demande de Prospection</h4>
+                </div>
+                <div class="card-body">
+                    {{ include('demande_prospection/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ path('app_demande_prospection_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                    {{ include('demande_prospection/_delete_form.html.twig', {
+                        'button_class': 'btn btn-danger',
+                        'button_icon': 'fas fa-trash',
+                        'button_label': 'Supprimer'
+                    }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -4,97 +4,121 @@ namespace App\Form;
 
 use App\Entity\Vendeurs;
 use App\Entity\TypesHuile;
-use App\Entity\Utilisateurs;
+use App\Entity\TypeVendeur;
 use App\Entity\CollectesHuile;
 use Symfony\Component\Form\AbstractType;
-use App\Repository\UtilisateurRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CollectesHuileType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // Ajout du champ 'volume' avec un type NumberType
+            // Volume collecté
             ->add('volume', NumberType::class, [
-                'label' => 'Volume (en litres)',
-                
-                'attr' => ['placeholder' => 'Entrez le volume d\'huile collecté'],
-                
-                'required' => true,
+                'label' => 'Volume collecté (litres)',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Entrez le volume collecté',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
             ])
-            
-            // Ajout du champ 'photoBidons' avec un type FileType
-            ->add('photoBidons', FileType::class, [
-                'label' => 'Photo des bidons',
-                'mapped' => false, // Indique que ce champ n'est pas mappé à l'entité
-                'required' => false,
-            ])
-            
-            // Ajout du champ 'prixAchat' avec un type NumberType
+
+            // Prix d'achat
             ->add('prixAchat', NumberType::class, [
-                'label' => 'Prix d\'achat (par litre)',
-                'attr' => ['placeholder' => 'Entrez le prix d\'achat'],
-                'required' => true,
+                'label' => 'Prix d\'achat (CFA)',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Entrez le prix d\'achat',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
             ])
-            
-            // Ajout du champ 'dateCollecte' avec un type DateType
-            ->add('dateCollecte', DateType::class, [
-                'label' => 'Date de collecte',
-                'widget' => 'single_text', // Utilise un champ de type date unique
-                'required' => true,
+
+            // Photos des bidons
+            ->add('photoBidons', FileType::class, [
+                'label' => 'Photos des bidons',
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'form-control-file',
+                    'accept' => 'image/*',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
             ])
-            
-            // Ajout du champ 'vendeurs' avec un type EntityType pour sélectionner un vendeur
+
+            // Commentaire du supérieur
+            ->add('commentaireSuperieur', TextareaType::class, [
+                'label' => 'Commentaire du supérieur',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'rows' => 3,
+                    'placeholder' => 'Ajoutez un commentaire ici...',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 mb-3',
+                ],
+            ])
+
+            // Sélection du vendeur
             ->add('vendeurs', EntityType::class, [
                 'class' => Vendeurs::class,
-                'choice_label' => 'nomVendeur', // Affiche le nom du vendeur
+                'choice_label' => 'nomVendeur',
                 'label' => 'Vendeur',
-                'placeholder' => 'Sélectionnez un vendeur',
-                'required' => true,
-            ])
-            
-            // Ajout du champ 'utilisateurs' avec un type EntityType pour sélectionner un utilisateur
-            ->add('utilisateurs', EntityType::class, [
-                'class' => Utilisateurs::class,
-                'query_builder' => function(UtilisateurRepository $utilisateurRepo){
-                    return $utilisateurRepo->createQueryBuilder('u')
-                        ->andWhere("u.role LIKE '%ROLE_SUPER_ADMIN%'");
-                },
-                'choice_label' => 'nomUtilisateur', // Affiche le nom de l'utilisateur
-                'label' => 'Agent de collecte',
                 'attr' => [
-                    'class' => 'js-select2 form-control',
-                    'data-search' => 'on'
+                    'class' => 'form-control',
                 ],
-                'placeholder' => 'Sélectionnez un utilisateur',
-                'required' => true,
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
             ])
-            
-            // Ajout du champ 'typehuile' avec un type EntityType pour sélectionner le type d'huile
+
+            // Type d'huile
             ->add('typehuile', EntityType::class, [
                 'class' => TypesHuile::class,
-                'choice_label' => 'nomTypeHuile', // Affiche le nom du type d'huile
+                'choice_label' => 'nomTypeHuile',
                 'label' => 'Type d\'huile',
-                'placeholder' => 'Sélectionnez un type d\'huile',
-                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
             ])
-        ;
+
+            // Type de vendeur
+            ->add('typevendeur', EntityType::class, [
+                'class' => TypeVendeur::class,
+                'choice_label' => 'nomType',
+                'label' => 'Type de vendeur',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'row_attr' => [
+                    'class' => 'col-12 col-md-6 col-lg-4 mb-3',
+                ],
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => CollectesHuile::class,
             'attr' => [
-                'class' => 'row gy-2'
-            ]
+                'class' => 'row g-3', // Classes Bootstrap pour des espacements fluides
+            ],
         ]);
     }
 }

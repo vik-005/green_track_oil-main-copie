@@ -1,5 +1,21 @@
-{% extends "base.html.twig" %}
+<!DOCTYPE html>
+<html lang="fr" class="js">
 
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta name="author" content="Softnio">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <link rel="shortcut icon" href="{{ asset('images/favicons.png') }}">
+    <title>Green Track Oil • {% block title %}Erreur 404 - Page introuvable{% endblock %}</title>
+
+    <!-- Stylesheets -->
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/dashlite.css?ver=3.2.3') }}">
+        <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/theme.css?ver=3.2.3') }}">
+        {% include '_partials/stylesheet.html.twig' %}
+    {% endblock %}
 
 {% block body %}
 
@@ -30,3 +46,12 @@
 	</body>
 
 {% endblock %}
+ {% block page_info %}
+                                        <h5>{% block sub_title %}{% endblock %}</h5>
+                                        <h4 class="mt-1">{% block page_title %}{% endblock %}</h4>
+                                        <hr>
+                                    {% endblock %}
+
+                                    {% block content %}
+                                        <!-- Contenu principal à afficher ici -->
+                                    {% endblock %}

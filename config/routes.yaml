@@ -5,3 +5,18 @@
 app_logout:
     path: /logout
     methods: [POST]
+app_export_pdf:
+    path: /prospection/export-pdf
+    controller: App\Controller\ProspectionController::exportPdf
+rapport_export_pdf:
+    path: /rapports/export/pdf
+    controller: App\Controller\RapportController::exportToPdf
+
+rapport_export_excel:
+    path: /rapports/export/excel
+    controller: App\Controller\RapportController::exportToExcel
+
+rapport_import_excel:
+    path: /rapports/import/excel
+    controller: App\Controller\RapportController::importFromExcel
+

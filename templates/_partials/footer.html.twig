@@ -1,48 +1,86 @@
-<div class="nk-footer bg-light text-dark">
-    <div class="container wide-xl">
-        <div class="nk-footer-wrap d-flex flex-lg-row flex-column align-items-center justify-content-between py-3">
-            <!-- Logo et droits d'auteur -->
-            <div class="nk-footer-left d-flex align-items-center">
-                <a href="#" class="nk-footer-logo text-dark d-flex align-items-center text-decoration-none">
-                    <!-- Ajoutez ici votre logo si vous en avez un -->
-                    <i class="bi bi-cube me-2"></i> <!-- Exemple d'icône -->
-                    <span class="ms-2">Oil Dashboard</span>
-                </a>
-                <span class="ms-3">|</span>
-                <span class="nk-footer-copyright ms-3">
-                    &copy; {{ "now"|date("Y") }} Oil. Réalisé par
-                    <a href="https://example.com" target="_blank" class="text-dark">VikenceDigitLab</a>
-                </span>
-            </div>
+<div class="nk-footer nk-footer-fluid bg-footer-green">
+	<div class="container-xl">
+		<div
+			class="nk-footer-wrap d-flex justify-content-between align-items-center">
+			<!-- Copyright Section -->
+			<div class="nk-footer-copyright">
+				&copy; 2024 GreenTrackOil. Template by
+				<a href="https://softnio.com" target="_blank">Softnio</a>
+			</div>
 
-            <!-- Liens supplémentaires -->
-            <div class="nk-footer-links d-flex flex-column flex-lg-row align-items-center mt-3 mt-lg-0">
-                <a href="" class="text-dark text-decoration-none me-lg-3 mb-2 mb-lg-0">Contact</a>
-                <a href="" class="text-dark text-decoration-none me-lg-3 mb-2 mb-lg-0">Politique de confidentialité</a>
-                <a href="" class="text-dark text-decoration-none">Conditions d'utilisation</a>
-            </div>
-        </div>
-    </div>
+			<!-- Language and Region Selection -->
+			<div class="nk-footer-links">
+				<ul
+					class="nav nav-sm">
+					<!-- Dropdown for Language Selection -->
+					<li class="nav-item dropup">
+						<a href="#" class="dropdown-toggle dropdown-indicator has-indicator nav-link text-white" data-bs-toggle="dropdown" data-offset="0,10">
+							<span>Français</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+							<ul class="language-list">
+								<li>
+									<a href="#" class="language-item">
+										<span class="language-name">English</span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="language-item">
+										<span class="language-name">Español</span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="language-item">
+										<span class="language-name">Français</span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="language-item">
+										<span class="language-name">Türkçe</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+
+					<!-- Region Selection Modal -->
+					<li class="nav-item">
+						<a data-bs-toggle="modal" href="#region" class="nav-link text-white">
+							<em class="icon ni ni-globe"></em>
+							<span class="ms-1">Sélectionner Région</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 
-<!-- Styles personnalisés -->
+<!-- Style -->
 <style>
-    .nk-footer {
-        background-color: #f8f9fa; /* Couleur de fond gris clair */
-        padding: 1rem 0; /* Padding vertical */
-    }
-    .nk-footer-logo i {
-        font-size: 1.5rem; /* Taille de l'icône */
-    }
-    .nk-footer-links a {
-        margin: 0.5rem 0; /* Espacement vertical pour les petits écrans */
-    }
-    .nk-footer-links {
-        text-align: center;
-    }
-    @media (min-width: 992px) {
-        .nk-footer-links {
-            text-align: right;
-        }
-    }
+	/* Style pour le footer avec un fond vert */
+	.bg-footer-green {
+		background-color: #122501; /* Couleur verte similaire au menu */
+		color: #fff; /* Couleur du texte en blanc pour contraster */
+		padding: 15px 0;
+	}
+
+	.nk-footer a {
+		color: #fff; /* Les liens en blanc */
+	}
+
+	.nk-footer a:hover {
+		color: #e9ecef; /* Couleur des liens au survol */
+	}
+
+	/* Assurez-vous que le footer est bien centré et espacés sur les petits écrans */
+	@media(max-width: 3168px) {
+		.nk-footer-wrap {
+			flex-direction: column;
+			text-align: center;
+		}
+		.nk-footer-links {
+			margin-top: 10px;
+		}
+	}
 </style>

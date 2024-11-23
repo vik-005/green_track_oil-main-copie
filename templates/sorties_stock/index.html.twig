@@ -1,0 +1,106 @@
+{# templates/sorties_stock/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Sorties de Stock{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Sorties de Stock</h1>
+
+        {# Affichage des messages de notification #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {# Bouton pour ajouter une nouvelle sortie de stock #}
+        <a href="{{ path('sorties_stock_new') }}" class="btn btn-primary mb-3">Ajouter une Sortie de Stock</a>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Volume Sorties</th>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <th>Prix de Vente (€)</th>
+                        {% endif %}
+                        <th>Date de Sortie</th>
+                        <th>Photos des conteneurs</th>
+                        <th>type huile</th>
+                       
+                        <th>Numéro Matricule camions</th>
+                        <th>Nom du Magasin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sortie in sorties_stocks %}
+                        <tr>
+                            <td>{{ sortie.id }}</td>
+                            <td>{{ sortie.volume }}</td>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td>{{ sortie.prixVente }}</td>
+                            {% endif %}
+                            <td>{{ sortie.dateSorti|date('d/m/Y H:i') }}</td>
+                            
+                            <td>
+                                {# Utilisation d'un carrousel Bootstrap pour afficher plusieurs photos #}
+                                {% if sortie.Photo is not empty %}
+                                    <div id="carouselPhotos{{ sortie.id }}" class="carousel slide" data-bs-interval="false">
+                                        <div class="carousel-inner">
+                                            {% for key, photo in sortie.Photo %}
+                                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                                    <img src="{{ asset('uploads/photos/' ~ photo) }}" class="d-block w-50 mx-auto" alt="Photo {{ key }}" style="max-height: 150px; object-fit: contain;">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPhotos{{ sortie.id }}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Précédent</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselPhotos{{ sortie.id }}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Suivant</span>
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            
+                          <td>{{ sortie.typehuile.nomTypeHuile  }}</td>
+                            <td>{{ sortie.nummat }}</td>
+                            <td>{{ sortie.nommag.nomUtilisateur }}</td>
+                            <td>
+                                <a href="{{ path('sorties_stock_show', {'id': sortie.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                                <a href="{{ path('sorties_stock_edit', {'id': sortie.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                                {# Formulaire de suppression avec confirmation #}
+                                <form method="post" action="{{ path('sorties_stock_delete', {'id': sortie.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette sortie de stock ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sortie.id) }}">
+                                    <button class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                 
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="8" class="text-end">
+                            Total des Sorties : {{ sorties_stocks|length }}
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    {# Inclusion des scripts nécessaires pour le carrousel Bootstrap #}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

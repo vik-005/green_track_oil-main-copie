@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Vendeurs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Liste des Vendeurs</h1>
+        <p>Date : {{ "now"|date("d/m/Y") }}</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>Pays</th>
+                <th>Téléphone</th>
+                <th>Email</th>
+                <th>Type Vendeur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vendeur in vendeurs %}
+                <tr>
+                    <td>{{ vendeur.nomVendeur }}</td>
+                    <td>{{ vendeur.adresse }}</td>
+                    <td>{{ vendeur.ville }}</td>
+                    <td>{{ vendeur.pays }}</td>
+                    <td>{{ vendeur.telephone }}</td>
+                    <td>{{ vendeur.email }}</td>
+                    <td>{{ vendeur.typevendeur ? vendeur.typevendeur.nomtype : 'N/A' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

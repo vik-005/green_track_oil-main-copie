@@ -11,11 +11,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 
 class VendeursType extends AbstractType
 {
@@ -53,16 +55,34 @@ class VendeursType extends AbstractType
                     'class' => 'col-lg-4'
                 ]
             ])
-            ->add('dateCreation', DateType::class, [
-                'row_attr' => [
-                    'class' => 'col-lg-4'
-                ]
-            ])
+           
             ->add('typevendeur', EntityType::class, [
                 'class' => TypeVendeur::class,
                 'choice_label' => 'nomType',
                 'row_attr' => [
                     'class' => 'col-lg-4'
+                ]
+            ])
+            ->add('photo', FileType::class, [
+                'label' => 'Photo (JPG/PNG)',
+                'mapped' => false,
+                'required' => false,
+                'data_class' => null,
+                'row_attr' => [
+                    'class' => 'col-lg-4'
+                ]
+            ])
+            ->add('latitude', TextType::class, [
+                'label' => 'Latitude',
+                'row_attr' => [
+                    'class' => 'col-lg-4'
+                ]
+            ])
+            ->add('longitude', TextType::class, [
+                'label' => 'Longitude',
+                'row_attr' => [
+                    'class' => 'col-lg-4'
+                    
                 ]
             ])
             ->add('submit', SubmitType::class, [

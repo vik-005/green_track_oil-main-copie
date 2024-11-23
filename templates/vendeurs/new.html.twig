@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}
+Créer un Nouveau Vendeur
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Créer un Nouveau Vendeur</h1>
+
+        {# Affichage des messages flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.nomvendeur, 'Nom du Vendeur') }}
+                    {{ form_widget(form.nomvendeur, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.nomvendeur) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.adresse, 'Adresse') }}
+                    {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.adresse) }}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form_label(form.ville, 'Ville') }}
+                    {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.ville) }}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form_label(form.pays, 'Pays') }}
+                    {{ form_widget(form.pays, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.pays) }}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form_label(form.telephone, 'Téléphone') }}
+                    {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.telephone) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.email, 'Email') }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.typevendeur, 'Type de Vendeur') }}
+                    {{ form_widget(form.typevendeur, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.typevendeur) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.latitude, 'Latitude') }}
+                    {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.latitude) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.longitude, 'Longitude') }}
+                    {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.longitude) }}
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-group">
+                    {{ form_label(form.photo, 'Photos') }}
+                    {{ form_widget(form.photo, {
+                        'attr': {
+                            'class': 'form-control',
+                            'multiple': true,
+                            'accept': 'image/*'
+                        }
+                    }) }}
+                    {{ form_errors(form.photo) }}
+                </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btn-sm me-2">Créer le Vendeur</button>
+                <a href="{{ path('app_vendeurs_index') }}" class="btn btn-secondary btn-sm">Annuler</a>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <style>
+        /* Styles personnalisés pour améliorer l'apparence */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group label {
+            font-weight: 600;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+{% endblock %}

@@ -4,36 +4,31 @@
     {% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
 
-{% block title %}Modifier la collecte d'huile{% endblock %}
+{% block title %}Modifier une Collecte d'Huile{% endblock %}
 
 {% block content %}
-    <h2>Modifier la Collecte d'Huile</h2>
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-        {{ form_row(form.volume, {'label': 'Volume (en litres)'}) }}
-
-        {# Champ pour la photo des bidons #}
-        {{ form_row(form.photoBidons, {
-            'label': 'Photo des bidons',
-            'attr': {
-                'accept': 'image/*',  
-            }
-        }) }}
-
-        {# Si la collecte contient déjà une photo, l'afficher ici #}
-        {% if collecte.photoBidons %}
-            <div>
-                <label>Photo actuelle :</label><br>
-                <img src="{{ asset('uploads/photos/' ~ collecte.photoBidons) }}" alt="Photo des bidons" style="max-width: 150px;">
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Modifier la Collecte d'Huile</h4>
+                </div>
+                <div class="card-body">
+                    {{ include('collectes_huile/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ path('app_collectes_huile_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                    {{ include('collectes_huile/_delete_form.html.twig', {
+                        'button_class': 'btn btn-danger ms-2',
+                        'button_icon': 'fas fa-trash',
+                        'button_label': 'Supprimer'
+                    }) }}
+                </div>
             </div>
-        {% endif %}
-
-        {{ form_row(form.prixAchat, {'label': 'Prix d\'achat (par litre)'}) }}
-        {{ form_row(form.dateCollecte, {'label': 'Date de collecte'}) }}
-        {{ form_row(form.vendeurs, {'label': 'Vendeur'}) }}
-        {{ form_row(form.utilisateurs, {'label': 'Agent de collecte'}) }}
-        {{ form_row(form.typehuile, {'label': 'Type d\'huile'}) }}
-        <button class="btn btn-primary">Mettre à jour</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('collectes_huile_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

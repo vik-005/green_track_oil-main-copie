@@ -19,6 +19,9 @@ class ApproveRejectProspectionType extends AbstractType
                     'Rejeter' => 'rejeté',
                 ],
                 'expanded' => true,
+                'row_attr' => [
+                    'class' => 'col-lg-4'
+                ]
             ])
             ->add('commentaire', TextareaType::class, [
                 'required' => false,

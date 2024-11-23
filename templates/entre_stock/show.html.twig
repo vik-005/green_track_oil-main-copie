@@ -1,0 +1,161 @@
+{# templates/entre_stock/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{# Bloc pour inclure la barre latérale #}
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{# Titre de la page à afficher dans l'onglet du navigateur #}
+{% block title %}Détails de l'Entrée de Stock{% endblock %}
+
+{# Contenu principal de la page #}
+{% block content %}
+    <div class="container mt-4">
+        {# Titre principal de la page avec alignement centré #}
+        <h1 class="text-center mb-4">Détails de l'Entrée de Stock</h1>
+
+        {# Messages Flash pour les Notifications (Succès et Erreurs) #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        {% endfor %}
+
+        {# Carte contenant les détails de l'entrée de stock #}
+        <div class="card shadow-sm">
+            {# En-tête de la carte avec un fond coloré #}
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Informations de l'Entrée de Stock</h5>
+            </div>
+
+            {# Corps de la carte avec les détails sous forme de tableau #}
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        {# Ligne pour l'ID #}
+                        <tr>
+                            <th scope="row" style="width: 30%;">ID</th>
+                            <td>{{ entre_stock.id }}</td>
+                        </tr>
+
+                        {# Ligne pour le Nombre de Bidons #}
+                        <tr>
+                            <th scope="row">Nombre de Bidons</th>
+                            <td>{{ entre_stock.nombrebidons }}</td>
+                        </tr>
+
+                        {# Ligne pour le Prix Unitaire #}
+                        <tr>
+                            <th scope="row">Prix Unitaire (FCFA)</th>
+                            <td>{{ entre_stock.prixunitaire | number_format(0, ',', ' ') }} FCFA</td>
+                        </tr>
+
+                        {# Ligne pour le Total #}
+                        <tr>
+                            <th scope="row">Total (FCFA)</th>
+                            <td>{{ entre_stock.total | number_format(0, ',', ' ') }} FCFA</td>
+                        </tr>
+
+                        {# Ligne pour le Type d'Huile #}
+                        <tr>
+                            <th scope="row">Type d'Huile</th>
+                            <td>{{ entre_stock.typehuile.nomTypeHuile }}</td>
+                        </tr>
+
+                        {# Ligne pour le Nom de l'Agent Responsable #}
+                        <tr>
+                            <th scope="row">Nom de l'Agent Responsable</th>
+                            <td>{{ entre_stock.agent.nomUtilisateur }}</td>
+                        </tr>
+
+                        {# Ligne pour le Nom du Magasinier Responsable #}
+                        <tr>
+                            <th scope="row">Nom du Magasinier Responsable</th>
+                            <td>
+                                {% if entre_stock.nommagasinier %}
+                                    {{ entre_stock.nommagasinier.nomUtilisateur }}
+                                {% else %}
+                                    <span class="text-muted">Non attribué</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {# Ligne pour la Date d'Enregistrement #}
+                        <tr>
+                            <th scope="row">Date d'Enregistrement</th>
+                            <td>
+                                {% if entre_stock.dateEnregisterement %}
+                                    {{ entre_stock.dateEnregisterement | date('d/m/Y H:i') }}
+                                {% else %}
+                                    <span class="text-muted">Non disponible</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Section pour les Actions (Retour, Modifier, Supprimer) #}
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            {# Bouton pour retourner à la liste des entrées de stock #}
+            <a href="{{ path('app_entre_stock_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+
+            {# Groupe de boutons pour Modifier et Supprimer (visible uniquement pour les administrateurs) #}
+            <div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    {# Bouton Modifier #}
+                    <a href="{{ path('app_entre_stock_edit', {'id': entre_stock.id}) }}" class="btn btn-warning me-2">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+
+                    {# Formulaire de Suppression #}
+                    {{ include('entre_stock/_delete_form.html.twig') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<style>
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 15px; /* Adds space between rows */
+        }
+
+        .table thead th {
+            background-color: #28a745;
+            color:white; /* Green header */
+        }
+
+        .table tbody td {
+            background-color: #f8f9fa; /* Light gray background for rows */
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+        }
+        .text-white{
+              background-color: #FFFFFF;
+        }
+</style>
+{% endblock %}

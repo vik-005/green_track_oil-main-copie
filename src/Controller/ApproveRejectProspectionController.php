@@ -2,51 +2,71 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\DemandesProspection;
-use App\Service\NotificationService;
+use App\Form\DemandesProspectionAdminType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ApproveRejectProspectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\DemandesProspectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/prospection")
+ */
 class ApproveRejectProspectionController extends AbstractController
 {
-    private $notificationService;
+    private  $entityManager;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->notificationService = $notificationService;
+        $this->entityManager = $entityManager;
     }
 
-    #[Route('/prospection/{id}/approve-reject', name: 'prospection_approve_reject')]
-    public function approveOrReject(Request $request, DemandesProspection $prospection, EntityManagerInterface $entityManager): Response
+    /**
+     * @Route("/en_attente", name="app_demande_prospection_attente_index", methods={"GET"})
+     */
+    public function index(DemandesProspectionRepository $demandesProspectionRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $demandesProspection = $demandesProspectionRepository->findAll();
 
-        $form = $this->createForm(ApproveRejectProspectionType::class);
+        return $this->render('demande_prospection/index.html.twig', [
+            'demandes_prospections' => $demandesProspection,
+        ]);
+    }
+
+    /**
+     * @Route("en_attente/{id}/edit", name="app_demande_prospection_attente_edit", methods={"GET", "POST"})
+     */
+    public function edit(Request $request, DemandesProspection $demandesProspection): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); // Vérification d'accès
+
+        $form = $this->createForm(DemandesProspectionAdminType::class, $demandesProspection);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $action = $form->get('action')->getData();
-            $prospection->setStatut($action);
-            $prospection->setDateApprobation(new \DateTime());
+            $demandesProspection->setDateApprobation(new DateTime());
+            // Sauvegarder les modifications
+            $this->entityManager->flush();
 
-            if ($action === 'rejeté') {
-                $prospection->setCommentaire($form->get('commentaire')->getData());
-            }
-
-            $entityManager->flush();
-
-            $this->notificationService->notifyAgentOfProspectionResult($prospection);
-
-            return $this->redirectToRoute('prospection_list');
+            $this->addFlash('success', 'The prospecting request has been processed.');
+            return $this->redirectToRoute('app_demande_prospection_attente_index');
         }
 
-        return $this->render('prospection/approve_reject.html.twig', [
+        // Gestion d'erreur si des champs sont manquants ou incorrects
+        if (!$demandesProspection->getAgent()) {
+            $this->addFlash('error', 'The "Supervisor" field is required.');
+            return $this->render('demande_prospection/edit.html.twig', [
+                'form' => $form->createView(),
+                'demandes_prospection' => $demandesProspection,
+            ]);
+        }
+
+        return $this->render('demande_prospection/edit.html.twig', [
             'form' => $form->createView(),
-            'prospection' => $prospection,
+            'demandes_prospection' => $demandesProspection,
         ]);
     }
 }

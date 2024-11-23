@@ -1,18 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block sidebar %}
-{% include "_partials/sidebar/sidebar_home.html.twig" %}
-
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
-{% block title %}Edit TypesHuile{% endblock %}
 
-{% block page_title %}<h1>Edit TypesHuile</h1>{% endblock %}
-{% block content %}
-    
+{% block title %}Edit an Oil Type{% endblock %}
 
-    {{ include('types_huile/_form.html.twig', {'button_label': 'Update'}) }}
+{% block page_title %}
+    <div class="text-center my-4">
+        <h1 class="display-5 fw-bold">Edit an Oil Type</h1>
+        <p class="text-muted">Update the information related to this oil type</p>
+    </div>
+{% endblock %}
 
-    <a href="{{ path('app_types_huile_index') }}">back to list</a>
-
-    {{ include('types_huile/_delete_form.html.twig') }}
+{% block body %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-warning text-white text-center">
+                        <h5 class="mb-0">Edit Form</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ include('types_huile/_form.html.twig', { 'button_label': 'Update' }) }}
+                    </div>
+                    <div class="card-footer bg-light text-center d-flex justify-content-between">
+                        <a href="{{ path('app_types_huile_index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to the list
+                        </a>
+                        {{ include('types_huile/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

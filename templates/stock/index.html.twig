@@ -1,39 +1,57 @@
+{# templates/stock/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}SortiesStock index{% endblock %}
+{% block title %}Stock{% endblock %}
 
-{% block body %}
-    <h1>SortiesStock index</h1>
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Liste des Stocks</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Volume</th>
-                <th>PrixVente</th>
-                <th>DateSorti</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for sorties_stock in sorties_stocks %}
-            <tr>
-                <td>{{ sorties_stock.id }}</td>
-                <td>{{ sorties_stock.volume }}</td>
-                <td>{{ sorties_stock.prixVente }}</td>
-                <td>{{ sorties_stock.dateSorti ? sorties_stock.dateSorti|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_stock_show', {'id': sorties_stock.id}) }}">show</a>
-                    <a href="{{ path('app_stock_edit', {'id': sorties_stock.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
-        </tbody>
-    </table>
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
 
-    <a href="{{ path('app_stock_new') }}">Create new</a>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Type d'Huile</th>
+                        <th>Quantité Initiale</th>
+                        <th>Quantité Stockée</th>
+                        <th>Magasinier</th>
+                        <th>Vendeur</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                        <tr>
+                            <td>{{ stock.typehuile.nomTypeHuile  }}</td>
+                            <td>{{ stock.quantiteInitiale }}</td>
+                            <td>{{ stock.quantiteStockee }}</td>
+                            <td>{{ stock.nommagasinier.nomUtilisateur }}</td>
+                            <td>{{ stock.nomvendeur.nomType }}</td>
+                            <td>
+                                <form method="POST" action="{{ path('app_stock_ajouter', {'id': stock.id}) }}" class="d-inline">
+                                    <input type="number" name="quantite" placeholder="Ajouter" required class="form-control d-inline w-auto" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Ajouter</button>
+                                </form>
+                                <form method="POST" action="{{ path('app_stock_retirer', {'id': stock.id}) }}" class="d-inline">
+                                    <input type="number" name="quantite" placeholder="Retirer" required class="form-control d-inline w-auto" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Retirer</button>
+                                </form>
+                                <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ path('app_stock_new') }}" class="btn btn-success">Créer un nouveau stock</a>
+    </div>
 {% endblock %}

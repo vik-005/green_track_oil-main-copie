@@ -14,7 +14,6 @@
     _mobile_nav = 'mobile-menu',
     _header = 'nk-header',
     _header_menu = 'nk-header-menu',
-    _aside = 'nk-aside',
     //breakpoints
     _break = NioApp.Break;
   function extend(obj, ext) {
@@ -23,22 +22,14 @@
     });
     return obj;
   }
-  // ClassInit @v1.0
-  NioApp.ClassBody = function () {
-    NioApp.AddInBody(_aside);
-  };
 
   // ClassInit @v1.0
   NioApp.ClassNavMenu = function () {
     NioApp.BreakClass('.' + _header_menu, _break.lg, {
       timeOut: 0
     });
-    NioApp.BreakClass('.' + _aside, _break.lg, {
-      timeOut: 0
-    });
     $win.on('resize', function () {
       NioApp.BreakClass('.' + _header_menu, _break.lg);
-      NioApp.BreakClass('.' + _aside, _break.lg);
     });
   };
 
@@ -195,8 +186,9 @@
           currentTarget = $(toggleCurrent).data('target'),
           $contentCurrent = $("[data-content=\"".concat(currentTarget, "\"]")),
           $dpd = $('.datepicker-dropdown'),
-          $tpc = $('.ui-timepicker-container');
-        if (!$toggleCurrent.is(e.target) && $toggleCurrent.has(e.target).length === 0 && !$contentCurrent.is(e.target) && $contentCurrent.has(e.target).length === 0 && $(e.target).closest('.select2-container').length === 0 && !$dpd.is(e.target) && $dpd.has(e.target).length === 0 && !$tpc.is(e.target) && $tpc.has(e.target).length === 0) {
+          $tpc = $('.ui-timepicker-container'),
+          $mdl = $('.modal');
+        if (!$toggleCurrent.is(e.target) && $toggleCurrent.has(e.target).length === 0 && !$contentCurrent.is(e.target) && $contentCurrent.has(e.target).length === 0 && $(e.target).closest('.select2-container').length === 0 && !$dpd.is(e.target) && $dpd.has(e.target).length === 0 && !$tpc.is(e.target) && $tpc.has(e.target).length === 0 && !$mdl.is(e.target) && $mdl.has(e.target).length === 0) {
           NioApp.Toggle.removed($toggleCurrent.data('target'), attr);
           toggleCurrent = false;
         }
@@ -237,7 +229,7 @@
       },
       attr = opt ? extend(def, opt) : def;
     $(imenu).on('click', function (e) {
-      if (NioApp.Win.width < _break.lg || $(this).parents().hasClass(_aside)) {
+      if (NioApp.Win.width < _break.lg) {
         NioApp.Toggle.dropMenu($(this), attr);
       }
       e.preventDefault();
@@ -274,7 +266,7 @@
       }
     });
     $win.on('resize', function () {
-      if (NioApp.Win.width < _break.xl || NioApp.Win.width < toggleBreak) {
+      if ((NioApp.Win.width < _break.xl || NioApp.Win.width < toggleBreak) && !NioApp.State.isMobile) {
         NioApp.Toggle.removed($toggle.data('target'), attr);
       }
     });
@@ -472,8 +464,8 @@
         var export_title = $(this).data('export-title') ? $(this).data('export-title') : 'Export';
         var btn = has_export ? '<"dt-export-buttons d-flex align-center"<"dt-export-title d-none d-md-inline-block">B>' : '',
           btn_cls = has_export ? ' with-export' : '';
-        var dom_normal = '<"row justify-between g-2' + btn_cls + '"<"col-7 col-sm-4 text-start"f><"col-5 col-sm-8 text-start"<"datatable-filter"<"d-flex justify-content-end g-2"' + btn + 'l>>>><"datatable-wrap my-3"t><"row align-items-center"<"col-7 col-sm-12 col-md-9"p><"col-5 col-sm-12 col-md-3 text-start text-md-end"i>>';
-        var dom_separate = '<"row justify-between g-2' + btn_cls + '"<"col-7 col-sm-4 text-start"f><"col-5 col-sm-8 text-start"<"datatable-filter"<"d-flex justify-content-end g-2"' + btn + 'l>>>><"my-3"t><"row align-items-center"<"col-7 col-sm-12 col-md-9"p><"col-5 col-sm-12 col-md-3 text-start text-md-end"i>>';
+        var dom_normal = '<"row justify-between g-2' + btn_cls + '"<"col-7 col-sm-4 text-start"f><"col-5 col-sm-8 text-end"<"datatable-filter"<"d-flex justify-content-end g-2"' + btn + 'l>>>><"datatable-wrap my-3"t><"row align-items-center"<"col-7 col-sm-12 col-md-9"p><"col-5 col-sm-12 col-md-3 text-start text-md-end"i>>';
+        var dom_separate = '<"row justify-between g-2' + btn_cls + '"<"col-7 col-sm-4 text-start"f><"col-5 col-sm-8 text-end"<"datatable-filter"<"d-flex justify-content-end g-2"' + btn + 'l>>>><"my-3"t><"row align-items-center"<"col-7 col-sm-12 col-md-9"p><"col-5 col-sm-12 col-md-3 text-start text-md-end"i>>';
         var dom = $(this).hasClass('is-separate') ? dom_separate : dom_normal;
         var def = {
             responsive: true,
@@ -484,7 +476,7 @@
               searchPlaceholder: "Type in to Search",
               lengthMenu: "<span class='d-none d-sm-inline-block'>Show</span><div class='form-control-select'> _MENU_ </div>",
               info: "_START_ -_END_ of _TOTAL_",
-              infoEmpty: "0",
+              infoEmpty: "",
               infoFiltered: "( Total _MAX_  )",
               paginate: {
                 "first": "First",
@@ -564,7 +556,7 @@
         modal.find('[href="' + tg_tab + '"]').tab('show');
       } else if (modal) {
         var tabdef = modal.find('.nk-nav.nav-tabs');
-        var link = $(tabdef[0]).find('[data-bs-toggle="tab"]');
+        var link = $(tabdef[0]).find('[data-toggle="tab"]');
         $(link[0]).tab('show');
       }
     });
@@ -1006,7 +998,6 @@
 
   // Extra @v1.1
   NioApp.OtherInit = function () {
-    NioApp.ClassBody();
     NioApp.PassSwitch();
     NioApp.CurrentLink();
     NioApp.LinkOff('.is-disable');

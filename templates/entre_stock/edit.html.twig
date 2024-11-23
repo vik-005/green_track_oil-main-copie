@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+{% block title %}Edit EntreStock{% endblock %}
+
+{% block content %}
+    <h1>Edit EntreStock</h1>
+
+    {{ include('entre_stock/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_entre_stock_index') }}">back to list</a>
+
+    {{ include('entre_stock/_delete_form.html.twig') }}
+{% endblock %}

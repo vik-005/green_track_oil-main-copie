@@ -1,84 +1,323 @@
-<!-- Header Section -->
-<header class="nk-header bg-light sticky-top shadow-sm">
-    <div class="container-lg">
-        <div class="d-flex justify-content-between align-items-center py-2 flex-wrap">
-            <!-- Logo Section -->
-            <div class="nk-header-brand">
-                <a href="{{ path('home') }}" class="logo-link">
-                    <img class="logo-light img-fluid" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png 2x') }}" alt="logo">
-                    <img class="logo-dark img-fluid" src="{{ asset('images/logo-dark.png') }}" srcset="{{ asset('images/logo-dark2x.png 2x') }}" alt="logo-dark">
-                </a>
-            </div>
+<div class="nk-header is-theme nk-header-fluid">
+	<div class="container-xl wide-xl">
+		<div
+			class="nk-header-wrap">
+			<!-- Menu Trigger pour Mobile -->
+			<div class="nk-menu-trigger me-sm-2 d-lg-none">
+				<a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="headerNav">
+					<em class="icon ni ni-menu"></em>
+				</a>
+			</div>
 
-            <!-- Menu Section (Desktop) -->
-            <nav class="d-none d-lg-block">
-                <ul class="nk-menu nk-menu-main d-flex mb-0">
-                    <li class="nk-menu-item">
-                        <a href="{{ path('home') }}" class="nk-menu-link">
-                            <span class="nk-menu-text">Accueil</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+			<!-- Logo -->
+			<div class="nk-header-brand">
+				<a href="{{ path('app_home') }}" class="logo-link">
+					<img class="logo-light logo-img" src="./images/logo.png" srcset="./images/logo2x.png 2x" alt="logo">
+					<img class="logo-dark logo-img" src="./images/logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="logo-dark">
+				</a>
+			</div>
+			<!-- .nk-header-brand -->
 
-            <!-- User Section -->
-            <div class="nk-header-tools d-flex align-items-center">
-                <ul class="nk-quick-nav d-flex align-items-center mb-0">
-                    <!-- User Dropdown -->
-                    <li class="dropdown user-dropdown">
-                        <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-toggle d-flex align-items-center">
-                                <div class="user-avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2">
-                                    <i class="bi bi-person" style="font-size: 18px;"></i>
-                                </div>
-                                <div class="user-info d-none d-lg-block">
-                                    <span class="lead-text">{{ app.user.username|lower }}</span>
-                                    <span class="sub-text">{{ app.user.email|u.truncate(25, '...') }}</span>
-                                </div>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-person me-2" style="font-size:20px;"></i>
-                                    Mon compte
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_logout') }}">
-                                    <i class="bi bi-box-arrow-right me-2" style="font-size:20px;"></i>
-                                    Déconnexion
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+			<!-- Menu Principal -->
+			<div class="nk-header-menu" data-content="headerNav">
+				<div class="nk-header-mobile">
+					<div class="nk-header-brand">
+						<a href="{{ path('app_home') }}" class="logo-link">
+							<img class="logo-light logo-img" src="./images/logo.png" srcset="./images/logo2x.png 2x" alt="logo">
+							<img class="logo-dark logo-img" src="./images/logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="logo-dark">
+						</a>
+					</div>
+					<div class="nk-menu-trigger me-n2">
+						<a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="headerNav">
+							<em class="icon ni ni-arrow-left"></em>
+						</a>
+					</div>
+				</div>
 
-                    <!-- Mobile Menu Icon -->
-                    <li class="d-lg-none">
-                        <a href="#" class="toggle nk-quick-nav-icon" data-bs-toggle="offcanvas" data-bs-target="#sideNav">
-                            <i class="bi bi-list"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
+				<ul class="nk-menu nk-menu-main ui-s2">
+					<!-- Menus toujours visibles -->
+					<!-- Dashboards (Accessible à tous les utilisateurs authentifiés) -->
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'dashboard_route' ? 'active' : '' }}"> <a href="{{ path('app_home') }}" class="nk-menu-link">
+							<span class="nk-menu-text">Acceuil</span>
+						</a>
+					</li>
 
-<!-- Offcanvas Menu for Mobile -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sideNav" aria-labelledby="sideNavLabel">
-    <div class="offcanvas-header">
-        <h5 id="sideNavLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="nk-menu nk-menu-main">
-            <li class="nk-menu-item">
-                <a href="{{ path('home') }}" class="nk-menu-link">
-                    <span class="nk-menu-text">Accueil</span>
-                </a>
-            </li>
-            <!-- Add more menu items here for mobile view -->
-        </ul>
-    </div>
-</div>
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						<!-- Dashboards (Accessible à tous les utilisateurs authentifiés) -->
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'dashboard_route' ? 'active' : '' }}">
+							<a href="" class="nk-menu-link">
+								<span class="nk-menu-text">Dashboards</span>
+							</a>
+						</li>
+
+						<!-- Menu AGENT -->
+						{% if is_granted('ROLE_AGENT') or is_granted('ROLE_ROOT') %}
+							<li class="nk-menu-item has-sub {{ app.request.attributes.get('_route') starts with 'app_demande_prospection' or app.request.attributes.get('_route') starts with 'collectes_huile' ? 'active' : '' }}">
+								<a href="#" class="nk-menu-link nk-menu-toggle">
+									<span class="nk-menu-text">AGENT</span>
+								</a>
+								<ul class="nk-menu-sub">
+									{% if waitingProspectionCount() > 0 %}
+										<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_demande_prospection_index' ? 'active' : '' }}">
+											<a href="{{ path('app_demande_prospection_attente_index') }}" class="nk-menu-link">
+												<span class="nk-menu-text">PROSPECTION EN ATTENTTE ({{ waitingProspectionCount() }})</span>
+											</a>
+										</li>
+									{% endif %}
+									{% if waitingRapportCount() > 0 %}
+										<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'rapport_index' ? 'active' : '' }}">
+											<a href="{{ path('rapport_index') }}" class="nk-menu-link">
+												<span class="nk-menu-text">Rapport EN ATTENTTE ({{ waitingRapportCount() }})</span>
+											</a>
+										</li>
+									{% endif %}
+
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_demande_prospection_index' ? 'active' : '' }}">
+										<a href="{{ path('app_demande_prospection_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">PROSPECTION</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_collectes_huile_index' ? 'active' : '' }}">
+										<a href="{{ path('app_collectes_huile_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">COLLECTE HUILE</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'vendeur_index' ? 'active' : '' }}">
+										<a href="{{ path('app_vendeurs_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">
+												vendeur</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
+
+						<!-- Menu HUILE -->
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ROOT') %}
+							<li class="nk-menu-item has-sub {{ app.request.attributes.get('_route') starts with 'app_types_huile' ? 'active' : '' }}">
+								<a href="#" class="nk-menu-link nk-menu-toggle">
+									<span class="nk-menu-text">HUILE</span>
+								</a>
+								<ul class="nk-menu-sub">
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_types_huile_index' ? 'active' : '' }}">
+										<a href="{{ path('app_types_huile_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">TYPE HUILE</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
+
+						<!-- Menu VENDEUR -->
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ROOT') %}
+							<li class="nk-menu-item has-sub {{ app.request.attributes.get('_route') starts with 'app_type_vendeur' ? 'active' : '' }}">
+								<a href="#" class="nk-menu-link nk-menu-toggle">
+									<span class="nk-menu-text">VENDEUR</span>
+								</a>
+								<ul class="nk-menu-sub">
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_type_vendeur_index' ? 'active' : '' }}">
+										<a href="{{ path('app_type_vendeur_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">TYPE VENDEUR</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'vendeur_index' ? 'active' : '' }}">
+										<a href="{{ path('app_vendeurs_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">Liste des vendeur</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
+
+						<!-- Menu ACHETEURS -->
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ROOT') %}{% endif %}
+
+						<!-- Menu MAGASINIER -->
+						{% if is_granted('ROLE_MAGASINIER') or is_granted('ROLE_ROOT') %}
+							<li class="nk-menu-item has-sub {{ app.request.attributes.get('_route') starts with 'app_entre_stock' or app.request.attributes.get('_route') starts with 'app_sortie_stock' ? 'active' : '' }}">
+								<a href="#" class="nk-menu-link nk-menu-toggle">
+									<span class="nk-menu-text">MAGASINIER</span>
+								</a>
+								<ul class="nk-menu-sub">
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_entre_stock_index' ? 'active' : '' }}">
+										<a href="{{ path('app_entre_stock_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">ENTRER STOCK</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'app_stock_index' ? 'active' : '' }}">
+										<a href="{{ path('sorties_stock_index') }}" class="nk-menu-link">
+											<span class="nk-menu-text">SORTIE STOCK</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
+					{% else %}
+						<!-- Menu pour utilisateurs non authentifiés -->
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">
+							<a href="{{ path('app_home') }}" class="nk-menu-link">
+								<span class="nk-menu-text">Accueil</span>
+							</a>
+						</li>
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'service' ? 'active' : '' }}">
+							<a href="" class="nk-menu-link">
+								<span class="nk-menu-text">Service</span>
+							</a>
+						</li>
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'inscription' ? 'active' : '' }}">
+							<a href="{{ path('app_register') }}" class="nk-menu-link">
+								<span class="nk-menu-text">Inscription</span>
+							</a>
+						</li>
+						<li class="nk-menu-item {{ app.request.attributes.get('_route') == 'connexion' ? 'active' : '' }}">
+							<a href="{{ path('app_login') }}" class="nk-menu-link">
+								<span class="nk-menu-text">Connexion</span>
+							</a>
+						</li>
+					{% endif %}
+					<li>
+						<a href="{{ path('app_login') }} " style="color: white;">
+							<em></em>
+							<span>Connexion</span>
+						</a>
+					</li>
+					{% if is_granted('ROLE_ROOT') %}
+						<li>
+							<a href="{{ path('app_register') }}" style="color: white;">
+								<em></em>
+								<span>Inscription</span>
+							</a>
+						</li>
+					{% endif %}
+
+				</ul>
+			</div>
+			<!-- .nk-header-menu -->
+
+			<!-- Outils du Header (Notifications et Profil Utilisateur) -->
+			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+
+				<ul
+					class="ms-auto nk-quick-nav">
+
+					<!-- Notifications -->
+					<li class="dropdown notification-dropdown">
+						<a href="#" class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
+							<div class="icon-status icon-status-info">
+								<em class="icon ni ni-bell"></em>
+							</div>
+						</a>
+						<div class="dropdown-menu dropdown-menu-xl dropdown-menu-end dropdown-menu-s1">
+							<div class="dropdown-head">
+								<span class="sub-title nk-dropdown-title">Notifications</span>
+								<a href="#">Mark All as Read</a>
+							</div>
+							<div class="dropdown-body">
+								<div class="nk-notification">
+									<div class="nk-notification-item dropdown-inner">
+										<div class="nk-notification-icon">
+											<em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+										</div>
+										<div class="nk-notification-content">
+											<div class="nk-notification-text">You have requested to
+												<span>Withdraw</span>
+											</div>
+											<div class="nk-notification-time">2 hrs ago</div>
+										</div>
+									</div>
+									<!-- Ajoutez d'autres notifications ici si nécessaire -->
+								</div>
+								<!-- .nk-notification -->
+							</div>
+							<!-- .nk-dropdown-body -->
+							<div class="dropdown-foot center">
+								<a href="#">View All</a>
+							</div>
+						</div>
+					</li>
+
+					<!-- .dropdown -->
+
+					<!-- Profil Utilisateur -->
+					<li class="dropdown user-dropdown order-sm-first">
+						<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+							<div class="user-toggle">
+								<div class="user-avatar sm">
+									{% if app.user.photo %}
+										<img src="{{ asset('uploads/photos/' ~ app.user.photo) }}" alt="{{ app.user.nomUtilisateur }}"/>
+									{% else %}
+										<div class="default-avatar">
+											{{ app.user.prenomutilisateur|slice(0,1)|upper }}
+										</div>
+									{% endif %}
+								</div>
+								<div class="user-info d-none d-xl-block">
+									<div class="user-status">{{ app.user.nomUtilisateur|capitalize }}</div>
+									<div class="user-name dropdown-indicator">
+										{{ app.user.prenomutilisateur|capitalize }}
+										({{ app.user.roles[0]|replace({'ROLE_': ''})|lower|capitalize }})
+									</div>
+								</div>
+							</div>
+						</a>
+						<div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1 is-light">
+							<div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+								<div class="user-card">
+									<div class="user-avatar">
+										{% if app.user.photo %}
+											<img src="{{ asset('uploads/photos/' ~ app.user.photo) }}" alt="{{ app.user.nomUtilisateur }}"/>
+										{% else %}
+											<div class="default-avatar">
+												{{ app.user.prenomutilisateur|slice(0,1)|upper }}
+											</div>
+										{% endif %}
+									</div>
+									<div class="user-info">
+										<span class="lead-text">{{ app.user.prenomutilisateur|capitalize }}</span>
+										<span class="sub-text">
+											{% if app.user.email|length > 25 %}
+												{{ app.user.email|slice(0,25) ~ '...' }}
+											{% else %}
+												{{ app.user.email }}
+											{% endif %}
+										</span>
+									</div>
+									<div class="user-action">
+										<a class="btn btn-icon me-n2" href="">
+											<em class="icon ni ni-setting"></em>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="dropdown-inner">
+								<ul class="link-list">
+									<li>
+										<a href="">
+											<em class="icon ni ni-user-alt"></em>
+											<span>View Profile</span>
+										</a>
+									</li>
+									<li>
+										<a href="">
+											<em class="icon ni ni-setting-alt"></em>
+											<span>Account Setting</span>
+										</a>
+									</li>
+
+									<li>
+										<form action="{{ path('app_logout') }}" method="POST" style="display: none;">
+											<button type="submit">Déconnexion</button>
+										</form>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</li>
+				</ul>
+			</li>
+		</div>
+	</div>
+	<!-- .dropdown-menu -->
+</li>
+<!-- .dropdown --></ul><!-- .nk-quick-nav --></div><!-- .nk-header-tools -->{% endif %}</div><!-- .nk-header-wrap --></div><!-- .container --></div><!-- .nk-header -->

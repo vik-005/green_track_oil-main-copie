@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\DemandesProspectionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DemandesProspectionRepository;
 
 /**
  * @ORM\Entity(repositoryClass=DemandesProspectionRepository::class)
@@ -35,7 +35,7 @@ class DemandesProspection
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $statut;
+    private $statut = 'en_attente';
 
     /**
      * @ORM\Column(type="datetime")
@@ -43,14 +43,32 @@ class DemandesProspection
     private $dateDemande;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateApprobation;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $commentaire;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeVendeur::class, inversedBy="demandesProspections")
+       
+     */
+    private $typevendeur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateurs::class, inversedBy="demandesProspections")
+     */
+    private $agent;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $montant;
+
+    // Getters et Setters
 
     public function getId(): ?int
     {
@@ -98,6 +116,28 @@ class DemandesProspection
         return $this->statut;
     }
 
+    public function getStatutLabel(): ?string
+    {
+        $label = null;
+
+        switch ($this->statut) {
+            case 'en_attente':
+                $label = "En attente";
+                break;
+            case 'approuve':
+                $label = "Approuvé";
+                break;
+            case 'rejete':
+                $label = "Rejeté";
+                break;
+            default:
+                $label = "Indisponible";
+                break;
+        }
+
+        return $label;
+    }
+
     public function setStatut(string $statut): self
     {
         $this->statut = $statut;
@@ -122,7 +162,7 @@ class DemandesProspection
         return $this->dateApprobation;
     }
 
-    public function setDateApprobation(\DateTimeInterface $dateApprobation): self
+    public function setDateApprobation(?\DateTimeInterface $dateApprobation): self
     {
         $this->dateApprobation = $dateApprobation;
 
@@ -134,9 +174,45 @@ class DemandesProspection
         return $this->commentaire;
     }
 
-    public function setCommentaire(string $commentaire): self
+    public function setCommentaire(?string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getTypevendeur(): ?TypeVendeur
+    {
+        return $this->typevendeur;
+    }
+
+    public function setTypevendeur(?TypeVendeur $typevendeur): self
+    {
+        $this->typevendeur = $typevendeur;
+
+        return $this;
+    }
+
+    public function getAgent(): ?Utilisateurs
+    {
+        return $this->agent;
+    }
+
+    public function setAgent(?Utilisateurs $agent): self
+    {
+        $this->agent = $agent;
+
+        return $this;
+    }
+
+    public function getMontant(): ?string
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(string $montant): self
+    {
+        $this->montant = $montant;
 
         return $this;
     }

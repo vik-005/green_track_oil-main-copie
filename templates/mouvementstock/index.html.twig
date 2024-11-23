@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mouvementstock index{% endblock %}
+
+{% block content %}
+    <h1>Mouvementstock index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantite</th>
+                <th>TypeMouvement</th>
+                <th>DateMouvement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mouvementstock in mouvementstocks %}
+            <tr>
+                <td>{{ mouvementstock.id }}</td>
+                <td>{{ mouvementstock.quantite }}</td>
+                <td>{{ mouvementstock.typeMouvement }}</td>
+                <td>{{ mouvementstock.dateMouvement ? mouvementstock.dateMouvement|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_mouvementstock_show', {'id': mouvementstock.id}) }}">show</a>
+                    <a href="{{ path('app_mouvementstock_edit', {'id': mouvementstock.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mouvementstock_new') }}">Create new</a>
+{% endblock %}

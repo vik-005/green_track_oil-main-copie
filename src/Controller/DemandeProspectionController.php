@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Service\PdfService;
 use App\Entity\DemandesProspection;
-use App\Service\NotificationService;
 use App\Form\DemandesProspectionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,51 +19,124 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class DemandeProspectionController extends AbstractController
 {
-    private $notificationService;
+    private $entityManager;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->notificationService = $notificationService;
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @Route("/en-attente", name="app_demande_prospection_attente_index", methods={"GET"})
+     */
+    public function attente(DemandesProspectionRepository $demandesProspectionRepository, Request $request): Response
+    {
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+        $vendorType = $request->query->get('vendor_type');
+
+        // Build filter criteria
+        $criteria = ['statut' => 'en_attente'];
+
+        // Vérifiez si les dates sont valides avant de les utiliser
+        if ($startDate && $endDate) {
+            try {
+                $startDateObj = new \DateTime($startDate);
+                $endDateObj = new \DateTime($endDate);
+                $criteria['dateDemande'] = ['gte' => $startDateObj, 'lte' => $endDateObj];
+            } catch (\Exception $e) {
+                // Gérer l'erreur de format de date ou ignorer le filtre
+                $this->addFlash('error', 'Invalid date format.');
+                return $this->redirectToRoute('app_demande_prospection_attente_index');
+            }
+        }
+
+        // Ajoutez d'autres critères de filtre
+        if ($vendorType) {
+            $criteria['vendorType'] = $vendorType;
+        }
+
+        // Si l'utilisateur a le rôle "ROLE_ADMIN"
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $demandesProspection = $demandesProspectionRepository->findBy($criteria);
+        } else {
+            $demandesProspection = $demandesProspectionRepository->findBy([
+                'agent' => $this->getUser(),
+                'statut' => 'en_attente'
+            ]);
+        }
+
+        return $this->render('demande_prospection/index.html.twig', [
+            'demandes_prospections' => $demandesProspection,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'vendor_type' => $vendorType,
+        ]);
     }
 
     /**
      * @Route("/", name="app_demande_prospection_index", methods={"GET"})
      */
-    public function index(DemandesProspectionRepository $demandesProspectionRepository): Response
+    public function index(DemandesProspectionRepository $demandesProspectionRepository, Request $request): Response
     {
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+        $vendorType = $request->query->get('vendor_type');
+
+        // Build filter criteria
+        $criteria = [];
+
+        if ($startDate && $endDate) {
+            $criteria['dateDemande'] = ['gte' => new \DateTime($startDate), 'lte' => new \DateTime($endDate)];
+        }
+        if ($vendorType) {
+            $criteria['Typevendeur'] = $vendorType;
+        }
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $demandesProspection = $demandesProspectionRepository->findBy($criteria);
+        } else {
+            $demandesProspection = $demandesProspectionRepository->findBy([
+                'agent' => $this->getUser(),
+            ]);
+        }
+
         return $this->render('demande_prospection/index.html.twig', [
-            'demandes_prospections' => $demandesProspectionRepository->findAll(),
+            'demandes_prospections' => $demandesProspection,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'vendor_type' => $vendorType,
         ]);
     }
 
     /**
      * @Route("/new", name="app_demande_prospection_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $prospection = new DemandesProspection();
         $form = $this->createForm(DemandesProspectionType::class, $prospection);
         $form->handleRequest($request);
-
+        if (!$this->isGranted('ROLE_AGENT')) {
+            $this->addFlash('error', 'Vous devez être un agent pour soumettre une collecte d\'huile.');
+            return $this->redirectToRoute('app_collectes_huile_index');
+        }
         if ($form->isSubmitted() && $form->isValid()) {
-            $prospection->setStatut('attente');
+            // Set status and date of request
+            $prospection->setStatut('en_attente');
+
+            // Assign the logged-in agent (if authenticated and valid role)
+            $agent = $this->getUser();
+
+
+            // Save the request in the database
+            $prospection->setAgent($this->getUser());
             $prospection->setDateDemande(new \DateTime());
+            $this->entityManager->persist($prospection);
+            $this->entityManager->flush();
 
-            // Assigner l'agent à la demande de prospection
-            if ($this->isGranted('ROLE_AGENT')) {
-                $prospection->setAgent($this->getUser());
-            } else {
-                $this->addFlash('error', 'Vous devez être un agent pour soumettre une demande de prospection.');
-                return $this->redirectToRoute('app_demande_prospection_new');
-            }
-
-            $entityManager->persist($prospection);
-            $entityManager->flush();
-
-            // Notification pour approbation
-            $this->notificationService->sendApprovalRequest($prospection);
-
-            return $this->redirectToRoute('app_demande_prospection_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'The prospecting request has been successfully created.');
+            return $this->redirectToRoute('app_demande_prospection_index');
         }
 
         return $this->render('demande_prospection/new.html.twig', [
@@ -82,20 +157,19 @@ class DemandeProspectionController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_demande_prospection_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, DemandesProspection $demandesProspection, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, DemandesProspection $demandesProspection): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_MANAGER');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); // Access check
 
         $form = $this->createForm(DemandesProspectionType::class, $demandesProspection);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            // Save changes
+            $this->entityManager->flush();
 
-            // Notification pour modification
-            $this->notificationService->sendProspectionUpdateNotification($demandesProspection);
-
-            return $this->redirectToRoute('app_demande_prospection_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'The prospecting request has been updated successfully.');
+            return $this->redirectToRoute('app_demande_prospection_index');
         }
 
         return $this->render('demande_prospection/edit.html.twig', [
@@ -107,18 +181,46 @@ class DemandeProspectionController extends AbstractController
     /**
      * @Route("/{id}/delete", name="app_demande_prospection_delete", methods={"POST"})
      */
-    public function delete(Request $request, DemandesProspection $demandesProspection, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, DemandesProspection $demandesProspection): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); // Access check
 
-        if ($this->isCsrfTokenValid('delete'.$demandesProspection->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($demandesProspection);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete' . $demandesProspection->getId(), $request->request->get('_token'))) {
+            // Delete the prospecting request
+            $this->entityManager->remove($demandesProspection);
+            $this->entityManager->flush();
 
-            // Notification pour suppression
-            $this->notificationService->sendProspectionDeletionNotification($demandesProspection);
+            $this->addFlash('success', 'The prospecting request has been deleted successfully.');
         }
 
-        return $this->redirectToRoute('app_demande_prospection_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_demande_prospection_index');
+    }
+
+    /**
+     * @Route("/prospection/export-pdf", name="app_demande_prospection_export_pdf",)
+     */
+    public function exportPdf(DemandesProspectionRepository $demandesProspectionRepository, PdfService $pdfService): Response
+    {
+        // Récupérer les données à afficher
+
+        $demandesProspection = $demandesProspectionRepository->findAll();
+        // Configurer DomPDF
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+
+        // Générer le contenu HTML
+        $html = $this->renderView('demande_prospection/export.html.twig', [
+            'demandes_prospections' => $demandesProspection,
+        ]);
+
+        // Générer le fichier PDF
+        $pdfContent = $pdfService->createPdf($html);
+
+        // Retourner le PDF en tant que réponse
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="prospection_requests.pdf"',
+        ]);
     }
 }

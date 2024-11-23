@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Rapport{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="text-center mb-4">Détails du Rapport</h1>
+            
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>{{ rapport.nomrestaurant }}</h4>
+                    <p class="mb-0">{{ rapport.Adresse }}</p>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Numéro du Restaurant :</div>
+                        <div class="col-sm-8">{{ rapport.numresto }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Rencontre :</div>
+                        <div class="col-sm-8">{{ rapport.rencontre }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Commentaire :</div>
+                        <div class="col-sm-8">
+                            {{ rapport.commentaire ? rapport.commentaire : 'Aucun commentaire' }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Supérieur :</div>
+                        <div class="col-sm-8">{{ rapport.superieure }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">Statut :</div>
+                        <div class="col-sm-8">
+                            <span class="badge 
+                                {% if rapport.Statut == 'Approuvé' %}
+                                    badge-success
+                                {% elseif rapport.Statut == 'Rejeté' %}
+                                    badge-danger
+                                {% else %}
+                                    badge-warning
+                                {% endif %}">
+                                {{ rapport.Statut }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('rapport_index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour
+                        </a>
+                        <a href="{{ path('rapport_edit', {'id': rapport.id}) }}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> Modifier
+                        </a>
+                        {{ include('rapport/_delete_form.html.twig', {
+                            'button_class': 'btn btn-danger',
+                            'button_label': '<i class="bi bi-trash"></i> Supprimer'
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

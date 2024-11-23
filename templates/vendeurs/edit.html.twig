@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}
+Éditer le Vendeur
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container mt-5">
+        <h1>Editer un  vendeur</h1>
+        	{{ form(form) }}
+
+    </div>
+{% endblock %}
+
+
+{% block toto %}
+        {{ form_start(form) }}
+
+        <div class="form-group mb-3">
+            {{ form_label(form.nomvendeur, 'Nom du Vendeur') }}
+            {{ form_widget(form.nomvendeur, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nomvendeur) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.adresse, 'Adresse') }}
+            {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.adresse) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.ville, 'Ville') }}
+            {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ville) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.pays, 'Pays') }}
+            {{ form_widget(form.pays, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.pays) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.telephone, 'Téléphone') }}
+            {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.telephone) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.email, 'Email') }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.typevendeur, 'Type de Vendeur') }}
+            {{ form_widget(form.typevendeur, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.typevendeur) }}
+        </div>
+
+        <div class="form-group mb-3">
+         {# Champ pour la photo des vendeur #}
+        {{ form_row(form.photo, {
+            'label': 'Photo ',
+            'attr': {
+                'accept': 'image/*',  
+            }
+        }) }}
+
+        {# Si la collecte contient déjà une photo, l'afficher ici #}
+        {% if vendeur.photo %}
+            <div>
+                <label>Photo actuelle :</label><br>
+                <img src="{{ asset('uploads/photos/' ~ vendeur.photo) }}" alt="Photo etablissement" style="max-width: 150px;">
+            </div>
+        {% endif %}
+           
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.longitude, 'Longitude') }}
+            {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.longitude) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.latitude, 'Latitude') }}
+            {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.latitude) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.dateCreation, 'Date de Création') }}
+            {{ form_widget(form.dateCreation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dateCreation) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary"> Mettre à jour </button>
+        <a href="{{ path('app_vendeurs_index') }}" class="btn btn-secondary">Annuler</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

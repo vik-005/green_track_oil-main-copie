@@ -1,13 +1,32 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Create a New Vendor Type{% endblock %}
+
 {% block sidebar %}
-{% include "_partials/sidebar/sidebar_home.html.twig" %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
-{% block title %}New TypeVendeur{% endblock %}
 
 {% block content %}
-    <h1>Create new TypeVendeur</h1>
-
-    {{ include('type_vendeur/_form.html.twig') }}
-
-    <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-primary">back to list</a>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h1 class="h4 mb-0">Create a New Vendor Type</h1>
+                    </div>
+                    <div class="card-body bg-light">
+                        {{ include('type_vendeur/_form.html.twig', {'button_label': 'Create'}) }}
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to list
+                            </a>
+                            <button type="submit" form="type-vendeur-form" class="btn btn-success">
+                                <i class="fas fa-check"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

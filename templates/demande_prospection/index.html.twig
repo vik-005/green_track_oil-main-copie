@@ -1,47 +1,195 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}DemandesProspection index{% endblock %}
+{% block sidebar %}
+	{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
 
-{% block body %}
-    <h1>DemandesProspection index</h1>
+{% block title %}Prospection Requests - Index
+{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Pays</th>
-                <th>Ville</th>
-                <th>Region</th>
-                <th>Statut</th>
-                <th>DateDemande</th>
-                <th>DateApprobation</th>
-                <th>Commentaire</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for demandes_prospection in demandes_prospections %}
-            <tr>
-                <td>{{ demandes_prospection.id }}</td>
-                <td>{{ demandes_prospection.pays }}</td>
-                <td>{{ demandes_prospection.ville }}</td>
-                <td>{{ demandes_prospection.region }}</td>
-                <td>{{ demandes_prospection.statut }}</td>
-                <td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ demandes_prospection.commentaire }}</td>
-                <td>
-                    <a href="{{ path('app_demande_prospection_show', {'id': demandes_prospection.id}) }}">show</a>
-                    <a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block page_title %}
+	<h2 class="text-center mb-2">Prospection Requests ({{ waitingProspectionCount() }})</h2>
+{% endblock %}
 
-    <a href="{{ path('app_demande_prospection_new') }}">Create new</a>
+{% block content %}
+	{# Flash messages display #}
+	<div class="container mt-4">
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		{% endfor %}
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		{% endfor %}
+	</div>
+
+	{# Filter Form #}
+
+	<div class=" container mt-4 ">
+	
+		<form method="get" action="{{ path('app_demande_prospection_index') }}">
+			<div
+				class="row mb-3">
+				<!-- Start Date -->
+				<div class="col-md-4">
+					<label for="start_date" class="form-label">Start Date</label>
+					<input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date|date('Y-m-d') }}">
+				</div>
+
+				<!-- End Date -->
+				<div class="col-md-4">
+					<label for="end_date" class="form-label">End Date</label>
+					<input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date|date('Y-m-d') }}">
+				</div>
+
+				<!-- Vendor Type -->
+				<div class="col-md-4">
+					<label for="vendor_type" class="form-label">Vendor Type</label>
+					<select id="vendor_type" name="vendor_type" class="form-control">
+						<option value="">-- Select Vendor Type --</option>
+						<option value="restaurant" {% if vendor_type == 'restaurant' %} selected {% endif %}>Restaurant</option>
+						<option value="hotel" {% if vendor_type == 'hotel' %} selected {% endif %}>Hotel</option>
+						<option value="industry" {% if vendor_type == 'industry' %} selected {% endif %}>Industry</option>
+					</select>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Apply Filters</button>
+		</form>
+	</div>
+
+	{# Table of filtered results #}
+	<div class="table-responsive  datatable-filter container mt-3">
+		<table class="table table-striped table-bordered rounded   datatable-init-export ">
+			<thead class="bg-success  ">
+				<tr>
+					<th>
+						COUNTRY</th>
+					<th>
+						CITY</th>
+					<th>REGION</th>
+					<th>
+						TRANSPORT COST</th>
+					<th>
+						VENDOR TYPE</th>
+					<th>AGENT</th>
+					<th>STATUS</th>
+					<th>REQUEST DATE</th>
+					<th>APPROVAL DATE</th>
+					<th>COMMENT</th>
+					<th>ACTIONS</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for demandes_prospection in demandes_prospections %}
+					<tr>
+						<td>{{ demandes_prospection.pays }}</td>
+						<td>{{ demandes_prospection.ville }}</td>
+						<td>{{ demandes_prospection.region }}</td>
+						<td>{{ demandes_prospection.montant }}</td>
+						<td>{{ demandes_prospection.typevendeur.nomType }}</td>
+						<td>{{ demandes_prospection.agent.nomUtilisateur }}</td>
+						<td>{{ demandes_prospection.statutLabel }}</td>
+						<td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : 'N/A' }}</td>
+						<td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : 'N/A' }}</td>
+						<td>{{ demandes_prospection.commentaire }}</td>
+
+						<td>
+							<em class="icon ni ni-printer-fill"></em>
+							<div class="d-flex justify-content-around">
+								
+
+								{% if is_granted('ROLE_SUPER_ADMIN') %}
+								<a href="{{ path('app_demande_prospection_show', {'id': demandes_prospection.id}) }}" class="btn btn-info btn-sm rounded-pill me-1 icon ni ni-eye">
+									<i class="fas fa-eye"></i>
+									View
+								</a>
+								<a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}" class="btn btn-warning btn-sm rounded-pill me-1">
+									<em class="icon ni ni-edit"></em>
+									<span>Edit</span>
+								</a>
+								<a href="{{ path('app_demande_prospection_export_pdf') }}" class="btn btn-secondary">
+									<i class="fas fa-file-pdf"></i>
+									Export to PDF
+								</a>
+									<a href="{{ path('app_demande_prospection_attente_edit', {'id': demandes_prospection.id}) }}" class="btn btn-warning btn-sm rounded-pill me-1">
+										<i class="fas fa-edit"></i>
+										Process
+									</a>
+									{# Delete Form #}
+									<form method="post" action="{{ path('app_demande_prospection_delete', {'id': demandes_prospection.id}) }}" onsubmit="return confirm('Are you sure you want to delete this prospection request?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ demandes_prospection.id) }}">
+										<button class="btn btn-danger btn-sm rounded-pill" type="submit">
+											<i class="fas fa-trash-alt"></i>
+											Delete
+										</button>
+									</form>
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
+		<a href="{{ path('app_demande_prospection_new') }}" class="btn btn-success btn-lg rounded-pill mt-2">
+			<i class="fas fa-plus"></i>
+			Create New Request
+		</a>
+	</div>
+
+	<style>
+		.bg-success {
+			background-color: #122501;
+		}
+		.table thead th {
+			vertical-align: middle;
+			text-align: center;
+		}
+		.table tbody td {
+			vertical-align: middle;
+			text-align: center;
+		}
+		.btn-info {
+			background-color: #17a2b8;
+			border-color: #17a2b8;
+			color: #fff;
+		}
+		.btn-info:hover {
+			background-color: #138496;
+			border-color: #117a8b;
+		}
+		.btn-warning {
+			background-color: #ffc107;
+			border-color: #ffc107;
+			color: #212529;
+		}
+		.btn-warning:hover {
+			background-color: #e0a800;
+			border-color: #d39e00;
+		}
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+			color: #fff;
+		}
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
+		.alert {
+			max-width: 800px;
+			margin: 0 auto 20px;
+		}
+	</style>
+
 {% endblock %}

@@ -34,10 +34,22 @@ class TypeVendeur
      */
     private $vendeurs;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandesProspection::class, mappedBy="typevendeur")
+     */
+    private $demandesProspections;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="nomvendeur")
+     */
+    private $stocks;
+
     public function __construct()
     {
         $this->formulairesVendeurs = new ArrayCollection();
         $this->vendeurs = new ArrayCollection();
+        $this->demandesProspections = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,6 +124,66 @@ class TypeVendeur
             // set the owning side to null (unless already changed)
             if ($vendeur->getTypevendeur() === $this) {
                 $vendeur->setTypevendeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DemandesProspection>
+     */
+    public function getDemandesProspections(): Collection
+    {
+        return $this->demandesProspections;
+    }
+
+    public function addDemandesProspection(DemandesProspection $demandesProspection): self
+    {
+        if (!$this->demandesProspections->contains($demandesProspection)) {
+            $this->demandesProspections[] = $demandesProspection;
+            $demandesProspection->setTypevendeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandesProspection(DemandesProspection $demandesProspection): self
+    {
+        if ($this->demandesProspections->removeElement($demandesProspection)) {
+            // set the owning side to null (unless already changed)
+            if ($demandesProspection->getTypevendeur() === $this) {
+                $demandesProspection->setTypevendeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stock>
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks[] = $stock;
+            $stock->setNomvendeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            if ($stock->getNomvendeur() === $this) {
+                $stock->setNomvendeur(null);
             }
         }
 

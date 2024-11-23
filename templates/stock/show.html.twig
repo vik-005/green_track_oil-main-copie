@@ -1,34 +1,41 @@
+{# templates/stock/show.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}SortiesStock{% endblock %}
+{% block title %}Détails du Stock{% endblock %}
 
-{% block body %}
-    <h1>SortiesStock</h1>
+{% block content %}
+    <h1>Détails du Stock</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ sorties_stock.id }}</td>
-            </tr>
-            <tr>
-                <th>Volume</th>
-                <td>{{ sorties_stock.volume }}</td>
-            </tr>
-            <tr>
-                <th>PrixVente</th>
-                <td>{{ sorties_stock.prixVente }}</td>
-            </tr>
-            <tr>
-                <th>DateSorti</th>
-                <td>{{ sorties_stock.dateSorti ? sorties_stock.dateSorti|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <h2>Type d'Huile</h2>
+        <p>{{ stock.typehuile.nom }}</p>
+    </div>
 
-    <a href="{{ path('app_stock_index') }}">back to list</a>
+    <div>
+        <h2>Quantité Initiale</h2>
+        <p>{{ stock.quantiteInitiale }}</p>
+    </div>
 
-    <a href="{{ path('app_stock_edit', {'id': sorties_stock.id}) }}">edit</a>
+    <div>
+        <h2>Quantité Stockée</h2>
+        <p>{{ stock.quantiteStockee }}</p>
+    </div>
 
-    {{ include('stock/_delete_form.html.twig') }}
+    <div>
+        <h2>Magasinier</h2>
+        <p>{{ stock.nommagasinier.nom }}</p>
+    </div>
+
+    <div>
+        <h2>Vendeur</h2>
+        <p>{{ stock.nomvendeur.nom }}</p>
+    </div>
+
+    <div>
+        <a href="{{ path('app_stock_edit', {'id': stock.id}) }}">Modifier</a>
+    </div>
+
+    <div>
+        <a href="{{ path('app_stock_index') }}">Retour à la liste des Stocks</a>
+    </div>
 {% endblock %}

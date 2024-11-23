@@ -4,28 +4,25 @@
     {% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
 
-{% block title %}Nouvelle collecte d'huile{% endblock %}
+{% block title %}Créer une nouvelle collecte d'huile{% endblock %}
 
 {% block content %}
-    <h2>Nouvelle Collecte d'Huile</h2>
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
-        {{ form_row(form.volume, {'label': 'Volume (en litres)'}) }}
-        
-        {# Champ pour la photo des bidons #}
-        {{ form_row(form.photoBidons, {
-            'label': 'Photo des bidons',
-            'attr': {
-                'accept': 'image/*',  
-            }
-        }) }}
-        
-        {{ form_row(form.prixAchat, {'label': 'Prix d\'achat (par litre)'}) }}
-        {{ form_row(form.dateCollecte, {'label': 'Date de collecte'}) }}
-        {{ form_row(form.vendeurs, {'label': 'Vendeur'}) }}
-        {{ form_row(form.utilisateurs, {'label': 'Agent de collecte'}) }}
-        {{ form_row(form.typehuile, {'label': 'Type d\'huile'}) }}
-        <button class="btn btn-success">Enregistrer</button>
-    {{ form_end(form) }}
-    
-    <a href="{{ path('collectes_huile_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    <div class="container my-5">
+        <div class="row justify-content-between align-items-center mb-4">
+            <div class="col-12 col-md-8">
+                <h3 class="text-primary">Créer une nouvelle collecte d'huile</h3>
+            </div>
+            <div class="col-12 col-md-4 text-md-end">
+                <a href="{{ path('app_collectes_huile_index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                {{ include('collectes_huile/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

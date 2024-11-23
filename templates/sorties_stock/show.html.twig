@@ -1,0 +1,73 @@
+{# templates/sorties_stock/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la Sortie de Stock{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Détails de la Sortie de Stock</h1>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <td>{{ sorties_stock.id }}</td>
+            </tr>
+            <tr>
+                <th>Volume Sortie</th>
+                <td>{{ sorties_stock.volume }}</td>
+            </tr>
+            <tr>
+                <th>Prix de Vente (€)</th>
+                <td>{{ sorties_stock.prixVente }}</td>
+            </tr>
+            <tr>
+                <th>Date de Sortie</th>
+                <td>{{ sorties_stock.dateSorti|date('d/m/Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Photos des Conteneurs</th>
+                <td>
+                    {% if sorties_stock.extractPhotos is not empty %}
+                        <div id="carouselPhotos{{ sorties_stock.id }}" class="carousel slide" data-bs-interval="false">
+                            <div class="carousel-inner">
+                                {% for key, photo in sorties_stock.extractPhotos %}
+                                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                        <img src="{{ asset('uploads/photos/' ~ photo) }}" class="d-block w-100" alt="Photo {{ key }}" style="max-height: 300px; object-fit: contain;">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselPhotos{{ sorties_stock.id }}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Précédent</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselPhotos{{ sorties_stock.id }}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Suivant</span>
+                            </button>
+                        </div>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Numéro Matricule camion</th>
+                <td>{{ sorties_stock.nummat }}</td>
+            </tr>
+            <tr>
+                <th>Nom du Magasin</th>
+                <td>{{ sorties_stock.nommag.username }}</td>
+            </tr>
+        </table>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('sorties_stock_edit', {'id': sorties_stock.id}) }}" class="btn btn-warning">Modifier</a>
+            <a href="{{ path('sorties_stock_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+
+    {# Inclusion des scripts nécessaires pour le carrousel Bootstrap #}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

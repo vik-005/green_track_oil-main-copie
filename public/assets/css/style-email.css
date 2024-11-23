@@ -8,7 +8,7 @@
   width: 100%;
 }
 .email-wraper a {
-  color: #6576ff;
+  color: #2263b3;
   word-break: break-all;
 }
 .email-wraper .link-block {
@@ -46,7 +46,7 @@
   border-bottom: #f4bd0e;
 }
 .email-btn {
-  background: #6576ff;
+  background: #2263b3;
   border-radius: 4px;
   color: #ffffff !important;
   display: inline-block;
@@ -71,12 +71,12 @@
 }
 .email-title {
   font-size: 13px;
-  color: #6576ff;
+  color: #2263b3;
   padding-top: 12px;
 }
 .email-heading {
   font-size: 18px;
-  color: #6576ff;
+  color: #2263b3;
   font-weight: 600;
   margin: 0;
   line-height: 1.4;
@@ -101,7 +101,7 @@
 }
 .email-heading-s3 {
   font-size: 18px;
-  color: #6576ff;
+  color: #2263b3;
   font-weight: 400;
   margin-bottom: 8px;
 }

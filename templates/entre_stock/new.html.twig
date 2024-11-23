@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}New EntreStock{% endblock %}
+
+{% block content %}
+    <h1>Create new EntreStock</h1>
+
+    {{ include('entre_stock/_form.html.twig') }}
+
+    <a href="{{ path('app_entre_stock_index') }}">back to list</a>
+{% endblock %}

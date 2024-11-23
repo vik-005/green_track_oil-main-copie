@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collecte d'Huile #{{ collecte.id }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .details {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .details th,
+        .details td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .details th {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .details td {
+            background-color: #ffffff;
+        }
+
+        .photos {
+            margin-top: 20px;
+        }
+
+        .photos h3 {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .photos img {
+            max-width: 150px;
+            height: auto;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .photos p {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-print {
+            background-color: #2ecc71;
+        }
+
+        .btn-print:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Collecte d'Huile #{{ collecte.id }}</h1>
+    </div>
+
+    <table class="details">
+        <tr>
+            <th>Volume (L)</th>
+            <td>{{ collecte.volume }}</td>
+        </tr>
+        <tr>
+            <th>Prix Achat (FCFA)</th>
+            <td>{{ collecte.prixAchat|number_format(0, ',', ' ') }} FCFA / Litre</td>
+        </tr>
+        <tr>
+            <th>Date Collecte</th>
+            <td>{{ collecte.dateCollecte ? collecte.dateCollecte|date('d/m/Y H:i:s') : 'Non disponible' }}</td>
+        </tr>
+        <tr>
+            <th>Statut</th>
+            <td>{{ collecte.statutLabel }}</td>
+        </tr>
+    </table>
+
+    <div class="photos">
+        <h3>Photos des Bidons :</h3>
+        {% if collecte.photoBidons %}
+            {% for photoBidons in collecte.photoBidons %}
+                <img src="{{ asset('uploads/photos/' ~ photoBidons) }}" alt="Photo Bidons">
+            {% endfor %}
+        {% else %}
+            <p>Aucune photo disponible</p>
+        {% endif %}
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-print" onclick="window.print();">Imprimer</button>
+    </div>
+</body>
+</html>

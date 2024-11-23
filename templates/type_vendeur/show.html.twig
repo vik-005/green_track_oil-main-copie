@@ -1,29 +1,54 @@
 {% extends 'base.html.twig' %}
-{% block sidebar %}
-{% include "_partials/sidebar/sidebar_home.html.twig" %}
-{% endblock %}
 
-{% block title %}TypeVendeur{% endblock %}
+{% block title %}Vendor Type Details{% endblock %}
 
 {% block content %}
-    <h1>TypeVendeur</h1>
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold">Vendor Type Details</h1>
+            <p class="text-muted">Detailed information about the selected vendor type</p>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ type_vendeur.id }}</td>
-            </tr>
-            <tr>
-                <th>NomType</th>
-                <td>{{ type_vendeur.nomType }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h5 class="mb-0">Vendor Type Information</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="text-end text-muted">ID:</th>
+                                    <td>{{ type_vendeur.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-end text-muted">Type Name:</th>
+                                    <td>{{ type_vendeur.nomType }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to list
+                            </a>
+                            <a href="{{ path('app_type_vendeur_edit', {'id': type_vendeur.id}) }}" class="btn btn-outline-warning">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-    <a href="{{ path('app_type_vendeur_index') }}">back to list</a>
-
-    <a href="{{ path('app_type_vendeur_edit', {'id': type_vendeur.id}) }}" class="btn btn-primary">edit</a>
-
-    {{ include('type_vendeur/_delete_form.html.twig') }}
+                <div class="card mt-4 shadow-lg border-0">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h5 class="mb-0">Delete this Vendor Type</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="text-muted mb-4">Warning: this action is irreversible.</p>
+                        {{ include('type_vendeur/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

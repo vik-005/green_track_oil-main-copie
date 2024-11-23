@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\SortiesStockRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SortiesStockRepository;
 
 /**
  * @ORM\Entity(repositoryClass=SortiesStockRepository::class)
@@ -31,6 +31,27 @@ class SortiesStock
      * @ORM\Column(type="datetime")
      */
     private $dateSorti;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nummat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateurs::class, inversedBy="sortiesStocks")
+     */
+    private $nommag;
+    /**
+     * @ORM\ManyToOne(targetEntity=TypesHuile::class, inversedBy="sortiesStocks")
+     */
+
+
+    private  $typeHuile;
 
     public function getId(): ?int
     {
@@ -70,6 +91,52 @@ class SortiesStock
     {
         $this->dateSorti = $dateSorti;
 
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getNummat(): ?string
+    {
+        return $this->nummat;
+    }
+
+    public function setNummat(string $nummat): self
+    {
+        $this->nummat = $nummat;
+
+        return $this;
+    }
+
+    public function getNommag(): ?Utilisateurs
+    {
+        return $this->nommag;
+    }
+
+    public function setNommag(?Utilisateurs $nommag): self
+    {
+        $this->nommag = $nommag;
+
+        return $this;
+    }
+    public function getTypeHuile(): ?TypesHuile
+    {
+        return $this->typeHuile;
+    }
+
+    public function setTypeHuile(?TypesHuile $typeHuile): self
+    {
+        $this->typeHuile = $typeHuile;
         return $this;
     }
 }

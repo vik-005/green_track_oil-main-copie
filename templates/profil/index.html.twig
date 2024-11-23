@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<div class="profil-container">
+    <div class="profil-header">
+        <h1 class="animate-fade-in">Profil de {{ utilisateur.prenomUtilisateur }} {{ utilisateur.nomUtilisateur }}</h1>
+    </div>
+
+    <div class="profil-card animate-slide-up">
+        <h2 class="card-title">Informations personnelles</h2>
+        <div class="card-content">
+            <p><strong>Email :</strong> {{ utilisateur.email }}</p>
+            <p><strong>Nom d'utilisateur :</strong> {{ utilisateur.nomUtilisateur }}</p>
+            <p><strong>Prénom :</strong> {{ utilisateur.prenomUtilisateur }}</p>
+            <p><strong>Date de création :</strong> {{ utilisateur.dateCreation|date('d/m/Y H:i') }}</p>
+        </div>
+    </div>
+
+    <div class="collection-section">
+        <h2 class="animate-fade-in">Collectes d'Huiles</h2>
+        <ul class="collection-list">
+            {% for collecte in utilisateur.collectesHuiles %}
+                <li class="collection-item animate-slide-up"></li>
+            {% else %}
+                <li class="collection-item animate-slide-up">Aucune collecte d'huile</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<style>
+    /* General Styling */
+    .profil-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Roboto', Arial, sans-serif;
+        color: #2c3e50;
+        text-align: center;
+        animation: fadeIn 1.5s ease-in;
+    }
+
+    /* Header */
+    .profil-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    /* Profile Card */
+    .profil-card {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .profil-card .card-title {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .card-content p {
+        font-size: 1rem;
+        margin: 5px 0;
+        color: #495057;
+    }
+
+    /* Collection List */
+    .collection-section h2 {
+        font-size: 1.75rem;
+        margin-bottom: 20px;
+    }
+
+    .collection-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .collection-item {
+        background-color: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 10px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.3s;
+        cursor: pointer;
+    }
+
+    .collection-item:hover {
+        background-color: #f1f1f1;
+        transform: translateY(-5px);
+    }
+
+    /* Animations */
+    .animate-fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .profil-card, .collection-item {
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        .profil-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .collection-section h2 {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .profil-card {
+            text-align: center;
+        }
+
+        .collection-item {
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}

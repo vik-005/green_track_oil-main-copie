@@ -1,15 +1,63 @@
 {% extends 'base.html.twig' %}
+
 {% block sidebar %}
-{% include "_partials/sidebar/sidebar_home.html.twig" %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
 {% endblock %}
-{% block title %}Edit TypeVendeur{% endblock %}
+
+{% block title %}Edit Vendor Type{% endblock %}
 
 {% block content %}
-    <h1>Edit TypeVendeur</h1>
+    <div class="container mt-5">
+        <div class="card shadow-lg">
+            <div class="card-header bg-warning text-white text-center">
+                <h2 class="mb-0">Edit Vendor Type</h2>
+            </div>
+            <div class="card-body">
+                {{ include('type_vendeur/_form.html.twig', {'button_label': 'Update'}) }}
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to list
+                    </a>
+                    {{ include('type_vendeur/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {{ include('type_vendeur/_form.html.twig', {'button_label': 'Update'}) }}
+    <style>
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    <a href="{{ path('app_type_vendeur_index') }}" class="btn btn-primary">back to list</a>
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
 
-    {{ include('type_vendeur/_delete_form.html.twig') }}
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .card {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .card-body {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+    </style>
 {% endblock %}

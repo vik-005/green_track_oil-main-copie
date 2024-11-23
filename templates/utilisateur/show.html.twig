@@ -3,48 +3,63 @@
 {% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>Utilisateurs</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Détails de l'utilisateur</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ utilisateur.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ utilisateur.email }}</td>
-            </tr>
-            <tr>
-                <th>Role</th>
-                <td>{{ utilisateur.role ? utilisateur.role|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ utilisateur.password }}</td>
-            </tr>
-            <tr>
-                <th>NomUtilisateur</th>
-                <td>{{ utilisateur.nomUtilisateur }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ utilisateur.photo }}</td>
-            </tr>
-            <tr>
-                <th>DateCreation</th>
-                <td>{{ utilisateur.dateCreation ? utilisateur.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Prenomutilisateur</th>
-                <td>{{ utilisateur.prenomutilisateur }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="card">
+            <div class="card-header">
+                Informations sur l'utilisateur
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Id</th>
+                            <td>{{ utilisateur.id }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nom d'utilisateur</th>
+                            <td>{{ utilisateur.nomUtilisateur }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Prénom</th>
+                            <td>{{ utilisateur.prenomutilisateur }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td>{{ utilisateur.email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Rôles</th>
+                            <td>
+                                {% for role in utilisateur.roles %}
+                                    <span class="badge bg-primary">{{ role }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Photo</th>
+                            <td>
+                                {% if utilisateur.photo %}
+                                    <img src="{{ asset('uploads/photos/' ~ utilisateur.photo) }}" alt="Photo de {{ utilisateur.nomUtilisateur }}" class="img-fluid" style="max-width: 100px; height: auto;">
+                                {% else %}
+                                    <span>Pas de photo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date de création</th>
+                            <td>{{ utilisateur.dateCreation ? utilisateur.dateCreation|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <a href="{{ path('app_utilisateur_index') }}">back to list</a>
-
-    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">edit</a>
-
-    {{ include('utilisateur/_delete_form.html.twig') }}
+                <div class="mt-4">
+                    <a href="{{ path('app_utilisateur_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}" class="btn btn-warning">Modifier</a>
+                    {{ include('utilisateur/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

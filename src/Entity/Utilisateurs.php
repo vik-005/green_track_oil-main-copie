@@ -31,7 +31,7 @@ class Utilisateurs implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $role = [];
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string")
@@ -58,19 +58,51 @@ class Utilisateurs implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $prenomutilisateur;
+    private $prenomUtilisateur;
 
     /**
      * @ORM\OneToMany(targetEntity=CollectesHuile::class, mappedBy="utilisateurs")
      */
     private $collectesHuiles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandesProspection::class, mappedBy="utilisateur")
+     */
+    private $demandesProspections;
+
+    /**
+     * @ORM\OneToMany(targetEntity=EntreStock::class, mappedBy="agent")
+     */
+    private $entreStocks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SortiesStock::class, mappedBy="nommag")
+     */
+    private $sortiesStocks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="nommagasinier")
+     */
+    private $stocks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rapport::class, mappedBy="agent")
+     */
+    private $rapports;
+
     public function __construct()
     {
-        $this->role = ['ROLE_USER'];
+        $this->roles = ['ROLE_USER'];
         $this->dateCreation = new \DateTime();
         $this->collectesHuiles = new ArrayCollection();
+        $this->demandesProspections = new ArrayCollection();
+        $this->entreStocks = new ArrayCollection();
+        $this->sortiesStocks = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
+        $this->rapports = new ArrayCollection();
     }
+
+    // Getters and Setters for each attribute
 
     public function getId(): ?int
     {
@@ -85,21 +117,19 @@ class Utilisateurs implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
     public function getRoles(): array
     {
-        $roles = $this->role;
+        $roles = $this->roles;
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
     {
-        $this->role = $roles;
-
+        $this->roles = $roles;
         return $this;
     }
 
@@ -111,7 +141,6 @@ class Utilisateurs implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -123,7 +152,6 @@ class Utilisateurs implements UserInterface
     public function setNomUtilisateur(?string $nomUtilisateur): self
     {
         $this->nomUtilisateur = $nomUtilisateur;
-
         return $this;
     }
 
@@ -135,7 +163,6 @@ class Utilisateurs implements UserInterface
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
-
         return $this;
     }
 
@@ -147,26 +174,21 @@ class Utilisateurs implements UserInterface
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 
-    public function getPrenomutilisateur(): ?string
+    public function getPrenomUtilisateur(): ?string
     {
-        return $this->prenomutilisateur;
+        return $this->prenomUtilisateur;
     }
 
-    public function setPrenomutilisateur(string $prenomutilisateur): self
+    public function setPrenomUtilisateur(string $prenomUtilisateur): self
     {
-        $this->prenomutilisateur = $prenomutilisateur;
-
+        $this->prenomUtilisateur = $prenomUtilisateur;
         return $this;
     }
 
-    public function eraseCredentials()
-    {
-        // Nettoyer les données sensibles
-    }
+    public function eraseCredentials() {}
 
     public function getUsername(): string
     {
@@ -197,7 +219,6 @@ class Utilisateurs implements UserInterface
             $this->collectesHuiles[] = $collectesHuile;
             $collectesHuile->setUtilisateurs($this);
         }
-
         return $this;
     }
 
@@ -208,16 +229,25 @@ class Utilisateurs implements UserInterface
                 $collectesHuile->setUtilisateurs(null);
             }
         }
-
         return $this;
     }
 
     /**
-     * Méthode magique __toString()
-     * Permet de retourner une représentation en chaîne de l'utilisateur.
+     * @return Collection<int, DemandesProspection>
      */
+    public function getDemandesProspections(): Collection
+    {
+        return $this->demandesProspections;
+    }
+
+  
+
+  
+
+    // Similar getter and setter methods for entreStocks, sortiesStocks, stocks, and rapports
+
     public function __toString(): string
     {
-        return $this->email; // Par exemple, retourner l'email comme représentation en chaîne
+        return $this->email;
     }
 }

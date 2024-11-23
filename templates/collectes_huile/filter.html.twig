@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Filtrer les Collectes d'Huile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Filtrer les Collectes d'Huile</h1>
+
+    <div class="filter-form bg-light p-4 rounded shadow-sm mb-5">
+        <form method="get" action="{{ path('app_collectes_huile_filter') }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="filter" class="form-label fw-bold">Statut :</label>
+                    <select id="filter" name="filter" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="en_attente" {% if filter == 'en_attente' %}selected{% endif %}>En attente</option>
+                        <option value="approuve" {% if filter == 'approuve' %}selected{% endif %}>Approuvé</option>
+                        <option value="rejete" {% if filter == 'rejete' %}selected{% endif %}>Rejeté</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="type_huile" class="form-label fw-bold">Type d'Huile :</label>
+                    <select id="type_huile" name="type_huile" class="form-select">
+                        <option value="">Tous</option>
+                        {% for type in types_huile %}
+                            <option value="{{ type.id }}" {% if type_huile == type.id %}selected{% endif %}>
+                                {{ type.nomTypeHuile }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="date_start" class="form-label fw-bold">Date de Début :</label>
+                    <input type="date" id="date_start" name="date_start" class="form-control" value="{{ date_start }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_end" class="form-label fw-bold">Date de Fin :</label>
+                    <input type="date" id="date_end" name="date_end" class="form-control" value="{{ date_end }}">
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Appliquer les Filtres
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if filter or date_start or date_end or type_huile %}
+        <div class="alert alert-info mb-4">
+            <strong>Filtres Appliqués :</strong>
+            {% if filter %} Statut = {{ filter | capitalize }}{% endif %}
+            {% if type_huile %}, Type d'Huile = {{ types_huile | filter(t => t.id == type_huile)[0].nomTypeHuile }}{% endif %}
+            {% if date_start %}, Date de Début = {{ date_start }}{% endif %}
+            {% if date_end %}, Date de Fin = {{ date_end }}{% endif %}
+        </div>
+    {% endif %}
+
+    {% if collectes_huiles is not empty %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date de Collecte</th>
+                        <th>Volume (L)</th>
+                        <th>Prix Achat (FCFA)</th>
+                        <th>Statut</th>
+                        <th>Type d'Huile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for collecte in collectes_huiles %}
+                        <tr>
+                            <td>{{ collecte.id }}</td>
+                            <td>{{ collecte.dateCollecte|date('Y-m-d') }}</td>
+                            <td>{{ collecte.volume }}</td>
+                            <td>{{ collecte.prixAchat|number_format(0, ',', ' ') }} FCFA</td>
+                            <td class="text-capitalize">{{ collecte.statut }}</td>
+                            <td>{{ collecte.typeHuile.nomTypeHuile }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mt-5">Résumé par Type d'Huile</h3>
+        <div class="summary-table mt-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-primary">
+                        <th>Type d'Huile</th>
+                        <th>Volume Total (L)</th>
+                        <th>Prix Total (FCFA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type, totals in totals_by_type %}
+                        <tr>
+                            <td>{{ type }}</td>
+                            <td>{{ totals.volume|number_format(2, ',', ' ') }}</td>
+                            <td>{{ totals.montant|number_format(0, ',', ' ') }} FCFA</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center mt-5">Aucun résultat trouvé avec les critères sélectionnés.</div>
+    {% endif %}
+</div>
+{% endblock %}

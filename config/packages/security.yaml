@@ -30,14 +30,15 @@ security:
         - { path: ^/(login|register), roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin/settings, roles: ROLE_ADMIN }
-        - { path: ^/collectes, roles: ROLE_ARGENT }
+        - { path: ^/collectes/huile, roles: ROLE_AGENT }
         - { path: ^/achats, roles: ROLE_ACHETEUR }
         - { path: ^/, roles: ROLE_USER }
 
     # Hiérarchie des rôles
     role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ACHETEUR, ROLE_ARGENT]
-        ROLE_ADMIN: [ROLE_ACHETEUR,ROLE_ARGENT]
+        ROLE_ROOT: [ROLE_SUPER_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ACHETEUR, ROLE_AGENT]
+        ROLE_ADMIN: [ROLE_ACHETEUR,ROLE_AGENT]
         ROLE_ARGENT: []
         ROLE_ACHETEUR: []
         ROLE_USER: []

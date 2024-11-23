@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
-
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
 {% block title %}New DemandesProspection{% endblock %}
 
-{% block body %}
-    <h1>Create new DemandesProspection</h1>
+{% block content %}
+    <div class="container py-4">
+        <h3 class="text-center mb-4">Créer une nouvelle Demande de Prospection</h3>
 
-    {{ include('demande_prospection/_form.html.twig') }}
+        <div class="card shadow-sm p-4">
+            {{ include('demande_prospection/_form.html.twig') }}
+        </div>
 
-    <a href="{{ path('app_demande_prospection_index') }}">back to list</a>
+        <div class="text-center mt-4">
+            <a href="{{ path('app_demande_prospection_index') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
 {% endblock %}

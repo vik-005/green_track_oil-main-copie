@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -15,8 +16,26 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class UtilisateursType extends AbstractType
 {
+
+    private $security;
+    
+    public function __construct(Security $security) {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $roles = [
+            'Utilisateur' => 'ROLE_USER',
+            'Administrateur' => 'ROLE_ADMIN',
+            'Agent de Collecte' => 'ROLE_AGENT',
+            'Acheteur' => 'ROLE_ACHETEUR',
+        ];
+
+        if ($this->security->isGranted('ROLE_ROOT')){
+            $roles['Super Administrateur'] = 'ROLE_SUPER_ADMIN';
+        }
+
         $builder
             ->add('email', TextType::class, [
                 'label' => 'Email',
@@ -24,13 +43,7 @@ class UtilisateursType extends AbstractType
             ])
             ->add('role', ChoiceType::class, [
                 'label' => 'Rôle',
-                'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Agent de Collecte' => 'ROLE_AGENT_DE_COLLECTE',
-                    'Acheteur' => 'ROLE_ACHETEUR',
-                ],
+                'choices' => $roles,
                 'expanded' => true,
                 'multiple' => true,
                 'required' => true,

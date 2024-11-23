@@ -28,7 +28,7 @@ class RegistrationFormType extends AbstractType
                 'choices' => [
                     'Super Administrateur' => 'ROLE_SUPER_ADMIN',
                     'Administrateur' => 'ROLE_ADMIN',
-                    'Agent de Collecte' => 'ROLE_AGENT_DE_COLLECTE',
+                    'Agent ' => 'ROLE_AGENT',
                     'Acheteur' => 'ROLE_ACHETEUR',
                 ],
                 'multiple' => true,

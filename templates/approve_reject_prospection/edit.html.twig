@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Modifier la Demande de Prospection{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Modifier la Demande de Prospection</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(field) }}
+                            </div>
+                        {% endfor %}
+
+                        <button class="btn btn-primary w-100 mt-3">
+                            <i class="fas fa-save"></i> Mettre à jour
+                        </button>
+                    {{ form_end(form) }}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ path('app_demande_prospection_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                    {{ include('demande_prospection/_delete_form.html.twig', {'button_class': 'btn btn-danger ms-2'}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

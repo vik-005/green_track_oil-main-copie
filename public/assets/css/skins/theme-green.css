@@ -31,7 +31,16 @@
 .is-dark .nk-menu-link:hover .nk-menu-icon, .is-dark .nk-menu-item.active > .nk-menu-link .nk-menu-icon, .is-dark .nk-menu-item.current-menu > .nk-menu-link .nk-menu-icon {
   color: #13dba4;
 }
-.is-dark .user-name {
+.is-dark .nk-news-icon .icon {
+  color: #0fac81;
+}
+.is-dark .nk-news-text .icon {
+  color: #8094ae;
+}
+.is-dark .nk-news-text p span {
+  color: rgba(128, 148, 174, 0.9);
+}
+.is-dark .user-name, .is-dark .nk-news-text p {
   color: #90a1b8;
 }
 .is-dark .nk-quick-nav-icon {
@@ -48,13 +57,16 @@
   color: #63f1ca;
   background: #0a7859;
 }
-.is-theme .nk-quick-nav-icon, .is-theme .overline-title {
+.is-theme .nk-news-icon .icon {
+  color: #1cebb3;
+}
+.is-theme .nk-news-text .icon, .is-theme .nk-quick-nav-icon, .is-theme .overline-title {
   color: #abe2d3;
 }
-.is-theme .nk-menu-heading .overline-title {
+.is-theme .nk-news-text p span, .is-theme .nk-menu-heading .overline-title {
   color: rgba(171, 226, 211, 0.8);
 }
-.is-theme .user-name {
+.is-theme .user-name, .is-theme .nk-news-text p {
   color: #bee9dd;
 }
 
@@ -62,13 +74,13 @@
 .nav-tabs .nav-link:after,
 .progress-bar, .dot-primary,
 .alert-fill.alert-primary,
-.bg-primary,
+.badge-primary,
 .icon-circle,
 .noUi-connect,
 .nk-kycfm-label::after,
-.sp-package-choose ~ label:after,
-.ticket-msg-attach-list a .icon,
+.plan-item-card:after,
 .nk-msg-menu-item a:after,
+.ui-shady .nk-msg-item.active:after, .ui-shady .nk-msg-item.current:after,
 .ui-softy .nk-msg-item.active:after, .ui-softy .nk-msg-item.current:after {
   background: #0fac81;
 }
@@ -85,6 +97,10 @@
   background: #13dba4;
 }
 
+.nk-news-item:hover .nk-news-text .icon {
+  color: #13dba4;
+}
+
 .nk-menu-link:hover,
 .nk-menu-link:hover .nk-menu-icon,
 .nk-menu-item.active > .nk-menu-link .nk-menu-icon,
@@ -92,7 +108,6 @@
 .nk-menu-link:hover .count,
 .nk-menu-sub .nk-menu-link:hover,
 .nk-menu-sub .active > .nk-menu-link,
-.nk-menu-sm .nk-menu-link:hover,
 .nk-menu-main .nk-menu-link:hover,
 .nk-menu-main .nk-menu-link:focus,
 .nk-menu-main .nk-menu-item.active > .nk-menu-link,
@@ -126,34 +141,31 @@
 .list-step li.list-step-current:before,
 .accordion-s2 .accordion-head .title,
 .accordion-s3 .accordion-head .title,
-.bg-outline-primary,
-.badge-dim.bg-primary,
+.badge-outline-primary,
+.badge-dim.badge-primary,
 .badge-dot.bg-primary,
-.badge-dim.bg-outline-primary,
+.badge-dim.badge-outline-primary,
 .alert-primary,
 .form-clip,
 .form-text-hint,
 .search-submit:hover,
-.nk-wg1-amount .amount,
+.nk-news-icon .icon,
+.nk-refwg-name .title,
+.nk-iv-wg1-info, .nk-wg4-note span,
+.nk-iv-scheme-item .amount-ex,
 .nk-kycfm-control:checked ~ .nk-kycfm-label .label-icon,
 .attach-item .icon,
 .attach-download:hover span,
-.ticket-meta .ticket-id strong,
-.tb-ticket-id,
-.tb-ftr-plan .icon,
-.support-topic-details h3,
-.support-topic-details h4,
-.support-topic-count,
-.invoice-desc .title,
-.invoice-bills .table th,
-.invoice-contact ul .icon,
 .nk-reply-meta-info .whom,
 .nk-msg-tags li > span .icon,
 .nk-msg-menu-item a:hover,
 .nk-msg-menu-item.active a,
 .user-balance,
 .user-avatar[class*=-primary-dim],
-.dropzone .dz-message-text span, a,
+.nk-order-ovwg-data.sell .amount,
+.nk-order-ovwg-data.sell .title .icon,
+.nk-wg-action-content p strong, a,
+.dropzone .dz-message-text span,
 .nk-switch-icon.active,
 .link-list-plain a .icon,
 .chat-upload-option a,
@@ -199,23 +211,23 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
   color: #e7f7f2 !important;
 }
 
-.alert-primary, .badge-dim.bg-outline-primary {
+.alert-primary, .badge-dim.badge-outline-primary {
   background-color: #e7f7f2;
   border-color: #9fdecd;
 }
 
-.alert-pro.alert-primary, .bg-primary,
-.sp-package-choose:checked ~ label,
+.alert-pro.alert-primary, .badge-primary,
+.plan-control:checked + .plan-item-card,
 .form-control:focus,
 .form-control.focus,
-.custom-file-input:focus ~ .custom-file-label,
+.form-file-input:focus ~ .form-file-label,
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before,
 .select2-container--default .select2-selection--single:focus,
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   border-color: #0fac81;
 }
 
-.bg-outline-primary {
+.nk-order-ovwg-data.sell, .badge-outline-primary {
   border-color: #9fdecd;
 }
 
@@ -223,7 +235,12 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
   border-top-color: #0fac81;
 }
 
+.nk-iv-wg2-amount.ui-v2 {
+  border-bottom-color: #0fac81;
+}
+
 .page-item.active .page-link,
+.plan-control:checked + .plan-item-card .plan-label,
 .custom-control-input:checked ~ .custom-control-label::before,
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
   background-color: #0fac81;
@@ -236,13 +253,13 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
   background-color: #6fcdb3;
 }
 
-.badge-dim.bg-primary {
+.badge-dim.badge-primary {
   background-color: #e7f7f2;
   border-color: #e7f7f2;
 }
 
 .bg-primary.badge-dot {
-  background: transparent !important;
+  background: transparent;
 }
 
 .nk-error-head {
@@ -256,9 +273,17 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
   color: #ffffff;
 }
 
-.icon-avatar {
+.icon-avatar, .nk-iv-scheme-icon.is-running {
   color: #0fac81;
   background-color: #dbf3ec;
+}
+
+.is-dark .nk-wgw-icon {
+  background: #3fbd9a;
+}
+
+.is-dark .nk-iv-wg2-title .title {
+  color: #abe2d3;
 }
 
 .is-theme .nk-quick-nav-icon:before {
@@ -341,7 +366,7 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
 
 .form-control:focus, .form-control.focus,
 .custom-control-input:focus ~ .custom-control-label::before,
-.custom-file-input:focus ~ .custom-file-label,
+.form-file-input:focus ~ .form-file-label,
 .select2-container--default .select2-selection--single:focus,
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   box-shadow: 0 0 0 3px rgba(15, 172, 129, 0.1);
@@ -356,7 +381,8 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle,
-.btn-primary.disabled, .btn-primary:disabled {
+.btn-primary.disabled, .btn-primary:disabled,
+.invest-amount-control:checked ~ .invest-amount-label {
   background-color: #0fac81;
   border-color: #0fac81;
 }
@@ -412,12 +438,17 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
   color: #526484;
 }
 
-.nk-menu-badge {
+.nk-menu-badge, .nk-menu-main .nk-menu-sub .nk-menu-badge {
   color: #57c5a7;
   background-color: #e7f7f2;
 }
 
-.is-theme .sub-text, .is-theme .lead-text span {
+.is-theme .nk-sidebar-footer, .nk-apps-sidebar.is-theme, .is-theme .nk-sidebar-profile-fixed {
+  background: #064936;
+  border-color: #0a7859;
+}
+
+.is-theme .nk-menu-footer .nk-menu-link, .is-theme .sub-text, .is-theme .lead-text span {
   color: #abe2d3;
 }
 

@@ -1,77 +1,172 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}" class="js">
+<html lang="fr" class="js">
+
 	<head>
-		<meta charset="UTF-8">
-		{% block meta_tags %}{% endblock %}
-		<title>Green track oil •
+		<base href="../">
+		<meta charset="utf-8">
+		<meta name="author" content="Softnio">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+		<link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+		<title>GreenTrackOil •
 			{% block title %}Erreur 404 - Page introuvable
 			{% endblock %}
 		</title>
-		{% block add_stylesheets %}{% endblock %}
+
+		<!-- Stylesheets -->
 		{% block stylesheets %}
+			<link rel="stylesheet" href="{{ asset('assets/css/dashlite.css?ver=3.2.3') }}">
+			<link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/theme.css?ver=3.2.3') }}">
 			{% include '_partials/stylesheet.html.twig' %}
 		{% endblock %}
 	</head>
-	{% block body %}
-		<body class="nk-body bg-white npc-default has-aside no-touch nk-nio-theme">
-			<div class="nk-app-root">
+
+	<body
+		class="nk-body bg-lighter npc-general has-sidebar">
+		<!-- Header -->
+		{% block header %}
+			{% include '_partials/header.html.twig' %}
+		{% endblock %}
+
+		<!-- Main Content -->
+		<div class="nk-app-root">
+
+			<div class="nk-main">
 				<div class="nk-wrap">
-					{% block header %}
-						{% include '_partials/header.html.twig' %}
+					<div class="js-preloader">
+						<div class="loading-animation tri-ring"></div>
+					</div>
+					{% block content %}
+						<!-- Contenu principal à afficher ici -->
 					{% endblock %}
-					<div class="nk-content p-0">
-						{% include "_partials/alert.html.twig" %}
-						<div class="container-lg wide-xl py-3 px-3">
-							{% block main %}
-								<div class="nk-content-inner">
-									{% block sidebar %}
-										<div class="nk-aside d-lg-none d-block" data-content="sideNav" data-toggle-overlay="true" data-toggle-screen="lg" data-toggle-body="true">
-											<div class="nk-sidebar-menu" data-simplebar>
-												{% include '_partials/mobile_header_menu.html.twig' %}
-											</div>
-										</div>
-									{% endblock %}
-									<div class="nk-content-body">
+
+					<div class="nk-content">
+						<h4 class="">
+							<div class="container-lg wide-xl py-3 px-3">
+								<!-- Sidebar -->
+
+								<!-- Page Content -->
+									<div class="nk-content-inner"> <div class="nk-content-body">
 										<div class="nk-content-wrap">
 											{% block page_info %}
 												<h5>
 													{% block sub_title %}{% endblock %}
 												</h5>
-												{% block navigation %}
-													<nav class="mb-3" style="overflow-x: auto;overflow-y:hidden;">
-														<ul class="breadcrumb breadcrumb flex-nowrap d-inline-flex text-truncate">
-															<li class="breadcrumb-item">
-																<a href="{{ path('home') }}">Acceuil</a>
-															</li>
-															{% block navigation_path %}{% endblock %}
-														</ul>
-													</nav>
-												{% endblock %}
-												<h4 class="mt-1">
-													{% block page_title %}{% endblock %}
-												</h4>
 
 												<hr>
-
 											{% endblock %}
 
-											{% block content %}
-											{% endblock %}
+
 										</div>
 									</div>
 								</div>
-							{% endblock %}
-							{% block footer %}
-								{% include '_partials/footer.html.twig' %}
-							{% endblock %}
+							</div>
 						</div>
+
+						<!-- Footer -->
+						{% block footer %}
+							<div class="nk-footer nk-footer-fluid bg-footer-green">
+								<div class="container-xl">
+									<div
+										class="nk-footer-wrap d-flex justify-content-between align-items-center">
+										<!-- Copyright Section -->
+										<div class="nk-footer-copyright">
+											&copy; 2024 GreenTrackOil. Template by
+											<a href="https://softnio.com" target="_blank">Softnio</a>
+										</div>
+
+										<!-- Language and Region Selection -->
+										<div class="nk-footer-links">
+											<ul
+												class="nav nav-sm">
+												<!-- Dropdown for Language Selection -->
+												<li class="nav-item dropup">
+													<a href="#" class="dropdown-toggle dropdown-indicator has-indicator nav-link text-white" data-bs-toggle="dropdown" data-offset="0,10">
+														<span>Français</span>
+													</a>
+													<div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+														<ul class="language-list">
+															<li>
+																<a href="#" class="language-item">
+																	<span class="language-name">English</span>
+																</a>
+															</li>
+															<li>
+																<a href="#" class="language-item">
+																	<span class="language-name">Español</span>
+																</a>
+															</li>
+															<li>
+																<a href="#" class="language-item">
+																	<span class="language-name">Français</span>
+																</a>
+															</li>
+															<li>
+																<a href="#" class="language-item">
+																	<span class="language-name">Türkçe</span>
+																</a>
+															</li>
+														</ul>
+													</div>
+												</li>
+
+												<!-- Region Selection Modal -->
+												<li class="nav-item">
+													<a data-bs-toggle="modal" href="#region" class="nav-link text-white">
+														<em class="icon ni ni-globe"></em>
+														<span class="ms-1">Sélectionner Région</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Style -->
+							<style>
+								/* Style pour le footer avec un fond vert */
+								.bg-footer-green {
+									background-color: #122501; /* Couleur verte similaire au menu */
+									color: #fff; /* Couleur du texte en blanc pour contraster */
+									padding: 15px 0;
+								}
+
+								.nk-footer a {
+									color: #fff; /* Les liens en blanc */
+								}
+
+								.nk-footer a:hover {
+									color: #e9ecef; /* Couleur des liens au survol */
+								}
+
+								/* Assurez-vous que le footer est bien centré et espacés sur les petits écrans */
+								@media(max-width: 3168px) {
+									.nk-footer-wrap {
+										flex-direction: column;
+										text-align: center;
+									}
+									.nk-footer-links {
+										margin-top: 10px;
+									}
+								}
+							</style>
+
+						{% endblock %}
 					</div>
 				</div>
 			</div>
+
+			<!-- Scripts -->
 			{% block javascripts %}
-				{% include '_partials/script.html.twig' %}
+				<script src="{{ asset('assets/js/bundle.js?ver=3.2.3') }}"></script>
+				<script src="{{ asset('assets/js/scripts.js?ver=3.2.3') }}"></script>
 			{% endblock %}
-			{% block add_javascripts %}{% endblock %}
 		</body>
-	{% endblock %}
+		<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	</body>
 </html>

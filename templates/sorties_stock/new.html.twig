@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SortiesStock{% endblock %}
+
+{% block content %}
+    <h1>Create new SortiesStock</h1>
+
+    {{ include('sorties_stock/_form.html.twig') }}
+
+    <a href="{{ path('sorties_stock_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+
+{% block title %}Détails du Vendeur
+{% endblock %}
+
+{% block content %}
+	<div class="container my-5">
+		<div class="card shadow-sm">
+			<div class="row g-0">
+				<div class="col-md-5">
+					
+				</div>
+				<div class="col-md-7">
+					<div class="card-body">
+						<h3 class="card-title">{{ vendeur.nomVendeur }}</h3>
+						<p class="card-text">
+							<strong>Adresse :</strong>
+							{{ vendeur.adresse }}<br>
+							<strong>Ville :</strong>
+							{{ vendeur.ville }}<br>
+							<strong>Pays :</strong>
+							{{ vendeur.pays }}<br>
+							<strong>Téléphone :</strong>
+							<a href="tel:{{ vendeur.telephone }}">{{ vendeur.telephone }}</a><br>
+							<strong>Email :</strong>
+							<a href="mailto:{{ vendeur.email }}">{{ vendeur.email }}</a><br>
+							<strong>Type de Vendeur :</strong>
+							{{ vendeur.typevendeur ? vendeur.typevendeur.nomtype : 'N/A' }}<br>
+							<strong>Latitude :</strong>
+							{{ vendeur.latitude }}<br>
+							<strong>Longitude :</strong>
+							{{ vendeur.longitude }}
+						</p>
+						<p class="card-text">
+							<small class="text-muted">Date de Création :
+								{{ vendeur.getFormattedDateCreation() }}</small>
+						</p>
+						<div class="d-flex justify-content-end mt-4">
+							<a href="{{ path('app_vendeurs_edit', {'id': vendeur.id}) }}" class="btn btn-warning me-2">
+								<i class="fas fa-edit"></i>
+								Éditer
+							</a>
+
+							<a href="{{ path('app_vendeurs_export_pdf') }}" class="btn btn-primary">
+								<i class="fas fa-file-pdf"></i>
+								Exporter en PDF
+							</a>
+
+
+							<form method="post" action="{{ path('app_vendeurs_delete', {'id': vendeur.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce vendeur ?');" style="display:inline;">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vendeur.id) }}">
+								<button class="btn btn-danger">
+									<i class="fas fa-trash-alt"></i>
+									Supprimer
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mt-4">
+			<a href="{{ path('app_vendeurs_index') }}" class="btn btn-secondary">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la liste
+			</a>
+		</div>
+	</div>
+
+	<style>
+		/* Styles pour la carte */
+		.card {
+			border-radius: 15px;
+			overflow: hidden;
+		}
+
+		.card-title {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 1rem;
+		}
+
+		.card-text strong {
+			display: inline-block;
+			width: 150px;
+		}
+
+		/* Styles pour les boutons */
+		.btn-warning {
+			background-color: #ffc107;
+			border-color: #ffc107;
+			transition: background-color 0.3s ease, border-color 0.3s ease;
+			color: #212529;
+		}
+
+		.btn-warning:hover {
+			background-color: #e0a800;
+			border-color: #d39e00;
+			color: #212529;
+		}
+
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+			transition: background-color 0.3s ease, border-color 0.3s ease;
+			color: #fff;
+		}
+
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+			color: #fff;
+		}
+
+		.btn-secondary {
+			background-color: #6c757d;
+			border-color: #6c757d;
+			transition: background-color 0.3s ease, border-color 0.3s ease;
+			color: #fff;
+		}
+
+		.btn-secondary:hover {
+			background-color: #5a6268;
+			border-color: #545b62;
+			color: #fff;
+		}
+
+		/* Styles pour le carousel */
+		.carousel-item img {
+			height: 100%;
+			object-fit: cover;
+		}
+
+		/* Styles pour les petits écrans */
+		@media(max-width: 768px) {
+			.card-title {
+				font-size: 1.5rem;
+			}
+
+			.card-text strong {
+				width: 100px;
+			}
+
+			.carousel-control-prev-icon,
+			.carousel-control-next-icon {
+				background-color: rgba(0, 0, 0, 0.5);
+				border-radius: 50%;
+				padding: 10px;
+			}
+		}
+	</style>
+
+	{# Initialisation du carousel Bootstrap 5 #}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+var carouselElements = document.querySelectorAll('.carousel');
+carouselElements.forEach(function (carousel) {
+var carouselInstance = new bootstrap.Carousel(carousel, {
+interval: 3000,
+ride: 'carousel'
+});
+});
+});
+	</script>
+{% endblock %}

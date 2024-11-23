@@ -1,50 +1,104 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}DemandesProspection{% endblock %}
+{% block sidebar %}
+    {% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
 
-{% block body %}
-    <h1>DemandesProspection</h1>
+{% block title %}Détails de la Demande de Prospection{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ demandes_prospection.id }}</td>
-            </tr>
-            <tr>
-                <th>Pays</th>
-                <td>{{ demandes_prospection.pays }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ demandes_prospection.ville }}</td>
-            </tr>
-            <tr>
-                <th>Region</th>
-                <td>{{ demandes_prospection.region }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ demandes_prospection.statut }}</td>
-            </tr>
-            <tr>
-                <th>DateDemande</th>
-                <td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateApprobation</th>
-                <td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Commentaire</th>
-                <td>{{ demandes_prospection.commentaire }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block page_title %}
+    <h2 class="text-center text-primary mt-4">Détails de la Demande de Prospection</h2>
+{% endblock %}
 
-    <a href="{{ path('app_demande_prospection_index') }}">back to list</a>
+{% block content %}
+    <div class="container my-4">
+        <div class="card shadow-lg rounded">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Informations sur la Demande</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            {% for key, value in {
+                                'Id': demandes_prospection.id,
+                                'Pays': demandes_prospection.pays,
+                                'Ville': demandes_prospection.ville,
+                                'Région': demandes_prospection.region,
+                                'Coût du transport': demandes_prospection.montant,
+                                'Statut': demandes_prospection.statut,
+                                'Date de la Demande': demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('d/m/Y H:i') : 'N/A',
+                                'Date d\'Approbation': demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('d/m/Y H:i') : 'Non approuvé',
+                                'Commentaire': demandes_prospection.commentaire ? demandes_prospection.commentaire : 'Aucun commentaire',
+                                'Agent': demandes_prospection.agent ? demandes_prospection.agent.nomutilisateur : 'Non assigné',
+                                'Type de Vendeur': demandes_prospection.typeVendeur ? demandes_prospection.typeVendeur.nomType : 'Non spécifié'
+                            } %}
+                                <tr>
+                                    <th class="bg-primary text-white">{{ key }}</th>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Boutons d'action -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ path('app_demande_prospection_index') }}" class="btn btn-outline-primary btn-sm rounded-pill shadow">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                    <div>
+                        <a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}" class="btn btn-warning btn-sm rounded-pill shadow mx-2">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        {{ include('demande_prospection/_delete_form.html.twig', {'button_class': 'btn btn-danger btn-sm rounded-pill shadow'}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_demande_prospection_edit', {'id': demandes_prospection.id}) }}">edit</a>
+    <style>
+        .card {
+            border: none;
+        }
 
-    {{ include('demande_prospection/_delete_form.html.twig') }}
+        .card-header {
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table th {
+            width: 30%;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .btn-outline-primary {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-warning {
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffca2c;
+        }
+
+        .btn-danger {
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc3545;
+        }
+    </style>
 {% endblock %}

@@ -1,0 +1,93 @@
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prospection Requests Export</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prospection Requests</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Region</th>
+                    <th>Transport Cost</th>
+                    <th>Vendor Type</th>
+                    <th>Agent</th>
+                    <th>Status</th>
+                    <th>Request Date</th>
+                    <th>Approval Date</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for demandes_prospection in demandes_prospections %}
+                    <tr>
+                        <td>{{ demandes_prospection.pays }}</td>
+                        <td>{{ demandes_prospection.ville }}</td>
+                        <td>{{ demandes_prospection.region }}</td>
+                        <td>{{ demandes_prospection.montant }}</td>
+                        <td>{{ demandes_prospection.typevendeur.nomType }}</td>
+                        <td>{{ demandes_prospection.agent.nomUtilisateur }}</td>
+                        <td>{{ demandes_prospection.statutLabel }}</td>
+                        <td>{{ demandes_prospection.dateDemande ? demandes_prospection.dateDemande|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        <td>{{ demandes_prospection.dateApprobation ? demandes_prospection.dateApprobation|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        <td>{{ demandes_prospection.commentaire }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer">
+            Generated on {{ "now"|date("Y-m-d H:i:s") }} by GREEN WASTE OIL TRAKING
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock d'Huile{% endblock %}
+
+{% block content %}
+    <h1>Liste des Stocks d'Huile</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type d'Huile</th>
+                <th>Quantité</th>
+                <th>Date de Mise à Jour</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock_huile in stock_huiles %}
+            <tr>
+                <td>{{ stock_huile.id }}</td>
+                <td>{{ stock_huile.typeHuile.nomTypeHuile }}</td>
+                <td>{{ stock_huile.quantite }}</td>
+                <td>{{ stock_huile.dateMaj ? stock_huile.dateMaj|date('Y-m-d H:i') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_stock_huile_show', {'id': stock_huile.id}) }}">voir</a>
+                    <a href="{{ path('app_stock_huile_edit', {'id': stock_huile.id}) }}">modifier</a>
+                    <form method="post" action="{{ path('app_stock_huile_delete', {'id': stock_huile.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock_huile.id) }}">
+                        <button class="btn btn-danger">supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun stock trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_huile_new') }}" class="btn btn-primary">Ajouter un stock d'huile</a>
+{% endblock %}

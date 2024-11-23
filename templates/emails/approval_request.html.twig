@@ -1,0 +1,28 @@
+ {% extends "base_auth.html.twig" %}
+
+{# templates/emails/approval_request.html.twig #}
+
+{% block title %}
+   Demande de Prospection
+{% endblock %}
+{% block content %}
+    
+        <h1></h1>
+        <p>Bonjour,</p>
+
+        <p>Une nouvelle demande de prospection a été soumise et est en attente de votre approbation.</p>
+
+        <h2>Détails de la demande</h2>
+        
+        <ul>
+            <li><strong>Pays :</strong> {{ demandes_prospection.pays }}</li>
+            <li><strong>Ville :</strong> {{ demandes_prospection.ville }}</li>
+            <li><strong>Région :</strong> {{ demandes_prospection.region }}</li>
+            <li><strong>Date de la Demande :</strong> {{ demandes_prospection.dateDemande|date('Y-m-d H:i:s') }}</li>
+            <li><strong>Agent Responsable :</strong> {{ demandes_prospection.agent.nomComplet }}</li>
+        </ul>
+
+        <p>Veuillez vous connecter au système pour approuver ou rejeter cette demande.</p>
+
+        <p>Cordialement,<br>Le système de gestion de prospection</p>
+{% endblock %}

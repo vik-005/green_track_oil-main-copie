@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block sidebar %}
+{% include "_partials/sidebar/sidebar_home.html.twig" %}
+{% endblock %}
+<h1>Notification de Suppression de Prospection</h1>
+<p>Cher(e) {{ utilisateur.nom }},</p>
+
+<p>Nous vous informons que la demande de prospection suivante a été supprimée :</p>
+
+<ul>
+    <li><strong>ID de la Prospection :</strong> {{ prospection.id }}</li>
+    <li><strong>Nom du Prospect :</strong> {{ prospection.nomProspect }}</li>
+    <li><strong>Date de Suppression :</strong> {{ "now"|date("d/m/Y H:i") }}</li>
+</ul>
+
+<p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+
+<p>Cordialement,</p>
+<p>L'équipe Green Track Oil</p>

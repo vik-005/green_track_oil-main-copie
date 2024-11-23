@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class CollecteHuileVoter extends Voter
 {
     const DELETE = 'delete';
+    const EDIT = 'edit';
 
     private $security;
 
@@ -23,6 +24,7 @@ class CollecteHuileVoter extends Voter
     {
         // On vérifie si l'attribut correspond à 'delete' et si le sujet est une instance de CollecteHuile
         return $attribute === self::DELETE && $subject instanceof CollectesHuile;
+        return $attribute === self::EDIT && $subject instanceof CollectesHuile;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool

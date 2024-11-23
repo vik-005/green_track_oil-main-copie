@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Tableau de bord</h1>
+
+<h2>Demandes de Prospection par Mois et Type de Vendeur</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Mois</th>
+            <th>Type de Vendeur</th>
+            <th>Nombre de Demandes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in prospectionParMois %}
+            <tr>
+                <td>{{ item.mois }}</td>
+                <td>{{ item.typeVendeur }}</td>
+                <td>{{ item.nombre }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Coût Total du Transport par Mois</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Mois</th>
+            <th>Coût Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in coutTransportParMois %}
+            <tr>
+                <td>{{ item.mois }}</td>
+                <td>{{ item.coutTotal }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Pourcentage des Demandes Approuvées et Rejetées par Mois</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Mois</th>
+            <th>% Approuvées</th>
+            <th>% Rejetées</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in pourcentageApprouveRejete %}
+            <tr>
+                <td>{{ item.mois }}</td>
+                <td>{{ item.pourcentageApprouve }}%</td>
+                <td>{{ item.pourcentageRejete }}%</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Nombre de Demandes par Statut</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Statut</th>
+            <th>Nombre de Demandes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in compterParStatut %}
+            <tr>
+                <td>{{ item.statut }}</td>
+                <td>{{ item.nombre }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
